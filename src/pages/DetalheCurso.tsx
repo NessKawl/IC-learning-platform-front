@@ -133,26 +133,49 @@ export default function DetalheCurso() {
                                         >
                                             <div className="p-5 border-t border-gray-800">
                                                 <div className="space-y-3">
-                                                    {modulo.materais?.map(
-                                                        (conteudo) => (
-                                                            <div
+                                                    {modulo.materais?.length ? (
+                                                        modulo.materais.map((conteudo) => (
+                                                            <a
                                                                 key={conteudo.mat_id}
-                                                                className="flex items-center gap-3 bg-gray-800 p-4 rounded-xl hover:bg-gray-700 cursor-pointer transition"
+                                                                href={conteudo.mat_url}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                                className="flex items-center justify-between bg-gray-800 p-4 rounded-xl hover:bg-gray-700 transition"
                                                             >
-                                                                {conteudo.tim_tipo_matarial.tim_nome ===
-                                                                    "video" ? (
-                                                                    <PlayCircle size={22} />
-                                                                ) : (
-                                                                    <FileText size={22} />
-                                                                )}
+                                                                <div className="flex items-center gap-3">
 
-                                                                <span>
-                                                                    {
-                                                                        conteudo.mat_titulo
-                                                                    }
-                                                                </span>
-                                                            </div>
-                                                        )
+                                                                    {conteudo.tim_tipo_matarial?.tim_nome?.toLowerCase() ===
+                                                                        "vídeo" ||
+                                                                        conteudo.tim_tipo_matarial?.tim_nome?.toLowerCase() ===
+                                                                        "video" ? (
+                                                                        <PlayCircle size={22} />
+                                                                    ) : (
+                                                                        <FileText size={22} />
+                                                                    )}
+
+                                                                    <div>
+                                                                        <p className="font-medium">
+                                                                            {conteudo.mat_titulo}
+                                                                        </p>
+
+                                                                        <p className="text-sm text-gray-400">
+                                                                            {
+                                                                                conteudo.tim_tipo_matarial
+                                                                                    ?.tim_nome
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-sm font-medium transition hover:cursor-pointer">
+                                                                    Abrir
+                                                                </button>
+                                                            </a>
+                                                        ))
+                                                    ) : (
+                                                        <div className="text-gray-500 text-sm">
+                                                            Nenhum material neste módulo
+                                                        </div>
                                                     )}
                                                 </div>
                                             </div>

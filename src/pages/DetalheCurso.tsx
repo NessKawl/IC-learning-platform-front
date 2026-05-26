@@ -44,6 +44,9 @@ export default function DetalheCurso() {
     const [curso, setCurso] = useState<Curso | null>(null);
     const [moduloAberto, setModuloAberto] = useState<number | null>(null);
 
+    const [materialSelecionado, setMaterialSelecionado] = useState<Material | null>(null);
+
+
     const [matricula, setMatricula] = useState<{
         matriculado: boolean;
         progresso: number;
@@ -90,14 +93,6 @@ export default function DetalheCurso() {
         setModuloAberto(moduloAberto === id ? null : id);
     };
 
-    if (!curso) {
-        return (
-            <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
-                Carregando curso...
-            </div>
-        );
-    }
-
     const handleComecarCurso = async () => {
         try {
             if (!id) return;
@@ -117,6 +112,97 @@ export default function DetalheCurso() {
         }
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    }
+
+    const renderMaterial = () => {
+
+        if (!matricula?.matriculado) {
+            return (
+                <div className="bg-gray-900 rounded-2xl h-[400px] flex items-center justify-center text-gray-400 border border-gray-800">
+                    Faça matrícula para acessar os conteúdos do curso
+                </div>
+            );
+        }
+
+        if (!materialSelecionado) {
+            return (
+                <div className="bg-gray-900 rounded-2xl h-[400px] flex items-center justify-center text-gray-400 border border-gray-800">
+                    Selecione um conteúdo para visualizar
+                </div>
+            );
+        }
+
+        const tipo = materialSelecionado.tim_tipo_matarial?.tim_nome?.toLowerCase();
+
+        // vídeo
+        if (tipo === "vídeo" || tipo === "video") {
+            return (
+                <video
+                    controls
+                    className="w-full h-[400px] rounded-2xl bg-black"
+                >
+                    <source
+                        src={materialSelecionado.mat_url}
+                        type="video/mp4"
+                    />
+                    Seu navegador não suporta vídeo.
+                </video>
+            );
+        }
+
+        // imagem
+        if (tipo === "imagem") {
+            return (
+                <img
+                    src={materialSelecionado.mat_url}
+                    alt={materialSelecionado.mat_titulo}
+                    className="w-full h-[400px] object-contain rounded-2xl bg-gray-900"
+                />
+            );
+        }
+
+        // pdf
+        if (tipo === "pdf") {
+            return (
+                <iframe
+                    src={materialSelecionado.mat_url}
+                    className="w-full h-[600px] rounded-2xl border border-gray-800"
+                />
+            );
+        }
+
+        // documento / outro
+        return (
+            <div className="bg-gray-900 rounded-2xl p-8 text-center border border-gray-800">
+                <p className="mb-4">
+                    Este conteúdo precisa ser aberto externamente.
+                </p>
+
+                <a
+                    href={materialSelecionado.mat_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl"
+                >
+                    Abrir Material
+                </a>
+            </div>
+        );
+    };
+
+    if (!curso) {
+        return (
+            <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
+                Carregando curso...
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gray-950 text-white">
             <NavBar />
@@ -126,11 +212,7 @@ export default function DetalheCurso() {
 
                     {/* Conteúdo principal */}
                     <div className="lg:col-span-2">
-                        <img
-                            src={curso.cur_capa_url}
-                            alt={curso.cur_titulo}
-                            className="w-full h-[400px] object-cover rounded-2xl shadow-lg"
-                        />
+                        {renderMaterial()}
 
                         <h1 className="text-4xl font-bold mt-6">
                             {curso.cur_titulo}
@@ -178,23 +260,21 @@ export default function DetalheCurso() {
 
                                         {/* Accordion */}
                                         <div
-                                            className={`transition-all duration-300 overflow-hidden ${moduloAberto === modulo.mod_id
-                                                ? "max-h-[500px]"
-                                                : "max-h-0"
-                                                }`}
+                                            className={`transition-all duration-300 overflow-hidden ${moduloAberto === modulo.mod_id ? "max-h-[500px]" : "max-h-0"}`}
                                         >
                                             <div className="p-5 border-t border-gray-800">
                                                 <div className="space-y-3">
                                                     {modulo.materais?.length ? (
                                                         modulo.materais.map((conteudo) => (
-                                                            <a
+                                                            <button
                                                                 key={conteudo.mat_id}
-                                                                href={conteudo.mat_url}
-                                                                target="_blank"
-                                                                rel="noreferrer"
-                                                                className="flex items-center justify-between bg-gray-800 p-4 rounded-xl hover:bg-gray-700 transition"
+                                                                onClick={() => {
+                                                                    setMaterialSelecionado(conteudo)
+                                                                    scrollToTop()
+                                                                }}
+                                                                className={`w-full flex items-center justify-between bg-gray-800 p-4 rounded-xl hover:text-blue-400 hover:bg-gray-700 hover:cursor-pointer transition ${materialSelecionado?.mat_id === conteudo.mat_id ? "bg-blue-900 text-blue-400" : ""}`}
                                                             >
-                                                                <div className="flex items-center gap-3">
+                                                                <div className="flex items-center gap-3 ho">
 
                                                                     {conteudo.tim_tipo_matarial?.tim_nome?.toLowerCase() ===
                                                                         "vídeo" ||
@@ -218,12 +298,7 @@ export default function DetalheCurso() {
                                                                         </p>
                                                                     </div>
                                                                 </div>
-
-                                                                <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-sm font-medium transition hover:cursor-pointer">
-                                                                    Abrir
-                                                                </button>
-                                                            </a>
-                                                        ))
+                                                            </button>))
                                                     ) : (
                                                         <div className="text-gray-500 text-sm">
                                                             Nenhum material neste módulo
@@ -300,7 +375,10 @@ export default function DetalheCurso() {
                                     </div>
                                 ) : (
                                     <button
-                                        onClick={handleComecarCurso}
+                                        onClick={() => {
+                                            handleComecarCurso()
+                                            navigate("/area-candidato")
+                                        }}
                                         className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-xl font-semibold"
                                     >
                                         Começar Curso

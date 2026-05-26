@@ -81,7 +81,7 @@ export default function AreaCandidato() {
 
                 <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
                     <h1 className="text-3xl font-bold">
-                        Área do Candidato
+                        <i className="bi bi-person-lines-fill"></i> Área do Candidato
                     </h1>
 
                     <p className="text-gray-500 mt-2">
@@ -149,7 +149,7 @@ export default function AreaCandidato() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols- md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {cursos.map(
                         (curso) => (
                             <div

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { ChevronDown, PlayCircle, FileText } from "lucide-react";
 import { GetCursoId } from "../service/cursoService";
+import { CriarMatricula, BuscarMatriculaCurso } from "../service/matriulaService";
 
 interface Material {
     mat_id: number;
@@ -35,8 +36,18 @@ export default function DetalheCurso() {
     const [searchParam] = useSearchParams();
     const id = searchParam.get("id");
 
+    const userStorage = localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user")!)
+        : null;
+    const navigate = useNavigate();
+
     const [curso, setCurso] = useState<Curso | null>(null);
     const [moduloAberto, setModuloAberto] = useState<number | null>(null);
+
+    const [matricula, setMatricula] = useState<{
+        matriculado: boolean;
+        progresso: number;
+    } | null>(null);
 
     useEffect(() => {
         if (!id) return;
@@ -45,6 +56,28 @@ export default function DetalheCurso() {
             try {
                 const data = await GetCursoId(id);
                 setCurso(data);
+
+                // verifica matrícula se usuário estiver logado
+                const userStorage = localStorage.getItem("user");
+
+                if (userStorage) {
+                    const user = JSON.parse(userStorage);
+
+                    // Buscar matrícula do usuário no curso
+                    const matriculaData = await BuscarMatriculaCurso(
+                        user.usu_id,
+                        Number(id)
+                    );
+
+                    if (matriculaData) {
+                        setMatricula({
+                            matriculado: true,
+                            progresso: matriculaData.progresso ?? 0,
+                        });
+                    }
+
+                    console.log("teste:", matricula);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -64,6 +97,25 @@ export default function DetalheCurso() {
             </div>
         );
     }
+
+    const handleComecarCurso = async () => {
+        try {
+            if (!id) return;
+
+            // Verifica login antes de tentar matricular
+            if (!userStorage) {
+                alert("Faça login para se matricular no curso.");
+                return navigate("/login");
+            }
+
+            await CriarMatricula(Number(id));
+
+            alert("Matrícula realizada!");
+        } catch (error) {
+            console.error("err:", error);
+            alert("Você já está matriculado.");
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-950 text-white">
@@ -218,9 +270,43 @@ export default function DetalheCurso() {
                                 </div>
                             </div>
 
-                            <button className="mt-6 w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-xl font-semibold">
-                                Começar Curso
-                            </button>
+                            <div className="mt-6">
+                                {matricula?.matriculado ? (
+                                    <div className="space-y-3">
+                                        <div className="bg-green-900/30 border border-green-700 rounded-xl p-4">
+                                            <p className="font-semibold text-green-400">
+                                                Você já está matriculado
+                                            </p>
+
+                                            <p className="text-sm text-gray-300 mt-1">
+                                                Progresso: {matricula.progresso}%
+                                            </p>
+
+                                            <div className="w-full bg-gray-800 rounded-full h-3 mt-3 overflow-hidden">
+                                                <div
+                                                    className="bg-green-500 h-full transition-all"
+                                                    style={{
+                                                        width: `${matricula.progresso}%`,
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* <button
+                                            className="w-full bg-green-600 hover:bg-green-700 transition py-3 rounded-xl font-semibold"
+                                        >
+                                            Continuar Curso
+                                        </button> */}
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={handleComecarCurso}
+                                        className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-xl font-semibold"
+                                    >
+                                        Começar Curso
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

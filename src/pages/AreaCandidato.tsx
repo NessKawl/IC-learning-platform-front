@@ -74,7 +74,7 @@ export default function AreaCandidato() {
 
     return (
         <div className="min-h-screen bg-gray-950 text-white">
-            
+
             <NavBar />
 
             <div className="max-w-7xl mx-auto p-6">
@@ -209,7 +209,7 @@ export default function AreaCandidato() {
                                         className="w-full mt-5 bg-blue-600 text-white py-2 rounded-xl"
                                         onClick={() =>
                                             navigate(
-                                                `/curso/${curso.id}`
+                                                `/detalhe-curso?id=${curso.id}`
                                             )
                                         }
                                     >

@@ -106,6 +106,8 @@ export default function DetalheCurso() {
             await CriarMatricula(Number(id));
 
             alert("Matrícula realizada!");
+            return navigate("/area-candidato")
+
         } catch (error) {
             console.error("err:", error);
             alert("Você já está matriculado.");
@@ -377,7 +379,6 @@ export default function DetalheCurso() {
                                     <button
                                         onClick={() => {
                                             handleComecarCurso()
-                                            navigate("/area-candidato")
                                         }}
                                         className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-xl font-semibold"
                                     >

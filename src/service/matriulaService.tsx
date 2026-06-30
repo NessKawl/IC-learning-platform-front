@@ -31,3 +31,18 @@ export const BuscarMatriculaCurso = async (
         return null;
     }
 };
+export const buscaAlunosProfessor =
+    async () => {
+        try {
+
+            const response = await api.get(`/matricula/professor/alunos`);
+
+            return response.data;
+
+        } catch (error) {
+
+            console.error(error);
+
+            return { qtdAlunos: 0, };
+        }
+    };

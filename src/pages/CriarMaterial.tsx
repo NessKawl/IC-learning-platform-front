@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import NavBar from "../components/NavBar";
 
-import { GetCursos } from "../service/cursoService";
+import { GetCursosPorUsuario } from "../service/cursoService";
 import { GetModuloByCurso } from "../service/moduloService";
 import { CreateMaterial } from "../service/materialService";
 
@@ -48,7 +48,7 @@ export default function CriarMaterial() {
         async function fetchCursos() {
 
             const data =
-                await GetCursos();
+                await GetCursosPorUsuario();
 
             setCursos(data);
         }

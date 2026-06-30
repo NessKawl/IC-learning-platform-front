@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 
 import { CreateModulo } from "../service/moduloService";
-import { GetCursos } from "../service/cursoService";
+import { GetCursosPorUsuario } from "../service/cursoService";
 
 interface Curso {
     cur_id: number;
@@ -29,7 +29,7 @@ export default function CriarModulo() {
 
             try {
 
-                const data = await GetCursos();
+                const data = await GetCursosPorUsuario();
 
                 setCursos(data);
 

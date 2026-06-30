@@ -1,30 +1,104 @@
 import api from "./api";
 
-export const GetCursos = async () => {
+export const GetCursos =
+    async () => {
 
-    const response = await api.get("/curso/all");
-    return response.data;
+        const response =
+            await api.get(
+                "/curso/all"
+            );
 
-};
+        return response.data;
+    };
 
-export const GetCursoId = async (id: string) => {
-    const response = await api.get(`/curso/${id}`);
-    return response.data;
-}
+export const GetCursosPorUsuario =
+    async () => {
 
-export const CreateCurso = async (
-    formData: FormData
-) => {
+        const response =
+            await api.get(
+                "/curso/por-usuario/me"
+            );
 
-    const response = await api.post(
-        "/curso/register",
-        formData,
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        }
-    );
+        return response.data;
+    };
 
-    return response.data;
-};
+export const GetMeusCursos =
+    async () => {
+
+        const response =
+            await api.get(
+                "/curso/meus-cursos"
+            );
+
+        return response.data;
+    };
+
+export const GetCursosPendentes =
+    async () => {
+
+        const response =
+            await api.get(
+                "/curso/pendentes"
+            );
+
+        return response.data;
+    };
+
+export const AprovarCurso =
+    async (
+        id: number
+    ) => {
+
+        const response =
+            await api.patch(
+                `/curso/aprovar/${id}`
+            );
+
+        return response.data;
+    };
+
+export const RejeitarCurso =
+    async (
+        id: number
+    ) => {
+
+        const response =
+            await api.patch(
+                `/curso/rejeitar/${id}`
+            );
+
+        return response.data;
+    };
+
+export const GetCursoId =
+    async (
+        id: string
+    ) => {
+
+        const response =
+            await api.get(
+                `/curso/${id}`
+            );
+
+        return response.data;
+    };
+
+export const CreateCurso =
+    async (
+        formData: FormData
+    ) => {
+
+        const response =
+            await api.post(
+                "/curso/register",
+                formData,
+                {
+                    headers: {
+                        "Content-Type":
+                            "multipart/form-data",
+                    },
+                }
+            );
+
+        return response.data;
+    };

@@ -81,7 +81,7 @@ export default function AreaCandidato() {
 
                 <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
                     <h1 className="text-3xl font-bold">
-                        <i className="bi bi-person-lines-fill"></i> Área do Candidato
+                        <i className="bi bi-person-lines-fill"></i> Área do Aluno
                     </h1>
 
                     <p className="text-gray-500 mt-2">
@@ -106,7 +106,7 @@ export default function AreaCandidato() {
                         </p>
                     </div>
 
-                    <div className="bg-gray-900 p-6 rounded-2xl shadow">
+                    {/* <div className="bg-gray-900 p-6 rounded-2xl shadow">
                         <h2 className="text-gray-500 text-sm">
                             Progresso Médio
                         </h2>
@@ -128,7 +128,7 @@ export default function AreaCandidato() {
                                 : 0}
                             %
                         </p>
-                    </div>
+                    </div> */}
 
                     <div className="bg-gray-900 p-6 rounded-2xl shadow">
                         <h2 className="text-gray-500 text-sm">

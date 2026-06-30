@@ -16,12 +16,20 @@ export default function Home() {
           <p className="text-gray-400 mb-6">
             Cursos práticos, direto ao ponto, com foco no mercado
           </p>
-          <Link
-            to="/register"
-            className="bg-blue-600 px-6 py-3 rounded-lg text-lg hover:bg-blue-700"
-          >
-            Começar agora
-          </Link>
+          <div className="flex justify-center gap-4">
+            <Link
+              to="/register"
+              className="bg-blue-600 px-6 py-3 rounded-lg text-lg hover:bg-blue-700"
+            >
+              Quero ser Aluno
+            </Link>
+            <Link
+              to="/register-professor"
+              className="bg-blue-600 px-6 py-3 rounded-lg text-lg hover:bg-blue-700"
+            >
+              Quero ser Professor
+            </Link>
+          </div>
         </section>
         {/* Features */}
         <section className="grid md:grid-cols-3 gap-6 mt-20 px-6 max-w-6xl mx-auto">

@@ -35,9 +35,8 @@ export default function NavBar() {
     const navigate = useNavigate();
 
     // Controle de permissão
-    const podeCriar =
-        user.tipoUsuario === 2 || user.tipoUsuario === 3;
-
+    const podeCriar = user.tipoUsuario === 1 || user.tipoUsuario === 2;
+    const admin = user.tipoUsuario === 1;
     return (
         <nav className="bg-gray-800 flex justify-between items-center p-6 mx-auto">
 
@@ -62,10 +61,16 @@ export default function NavBar() {
                 {podeCriar && (
                     <>
                         <button
+                            onClick={() => navigate("/meus-cursos")}
+                            className="hover:text-gray-300 hover:cursor-pointer"
+                        >
+                            <i className="bi bi-book-fill"></i> Meus Cursos
+                        </button>
+                        <button
                             onClick={() => navigate("/criar-curso")}
                             className="hover:text-gray-300 hover:cursor-pointer"
                         >
-                            <i className="bi bi-plus-circle"></i> Criar Curso
+                            <i className="bi bi-plus-circle"></i> Propor Curso
                         </button>
 
                         <button
@@ -83,6 +88,14 @@ export default function NavBar() {
                         </button>
 
                     </>
+                )}
+                {admin && (
+                    <button
+                        onClick={() => navigate("/pendentes")}
+                        className="hover:text-gray-300 hover:cursor-pointer"
+                    >
+                        <i className="bi bi-check2-circle"></i> Aprovações
+                    </button>
                 )}
             </div>
 

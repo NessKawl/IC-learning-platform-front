@@ -50,7 +50,7 @@ export default function Register() {
         </strong></h1>
         <div className="bg-gray-800 p-8 rounded-xl w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center">
-            Criar conta
+            Criar conta Aluno
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">

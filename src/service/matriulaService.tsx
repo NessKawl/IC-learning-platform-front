@@ -31,6 +31,7 @@ export const BuscarMatriculaCurso = async (
         return null;
     }
 };
+
 export const buscaAlunosProfessor =
     async () => {
         try {

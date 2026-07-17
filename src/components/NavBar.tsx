@@ -49,54 +49,78 @@ export default function NavBar() {
                 </button>
             </h1>
 
-            <div className="flex gap-4">
+            <div className="flex gap-6 items-center">
 
-                <button
-                    onClick={() => navigate("/cursos")}
-                    className="hover:text-gray-300 hover:cursor-pointer"
-                >
-                    <i className="bi bi-book"></i> Cursos
-                </button>
+                <div className="relative group">
 
-                {podeCriar && (
-                    <>
-                        <button
-                            onClick={() => navigate("/meus-cursos")}
-                            className="hover:text-gray-300 hover:cursor-pointer"
-                        >
-                            <i className="bi bi-book-fill"></i> Meus Cursos
-                        </button>
-                        <button
-                            onClick={() => navigate("/criar-curso")}
-                            className="hover:text-gray-300 hover:cursor-pointer"
-                        >
-                            <i className="bi bi-plus-circle"></i> Propor Curso
-                        </button>
-
-                        <button
-                            onClick={() => navigate("/criar-modulo")}
-                            className="hover:text-gray-300 hover:cursor-pointer"
-                        >
-                            <i className="bi bi-plus-circle"></i> Criar Módulo
-                        </button>
-
-                        <button
-                            onClick={() => navigate("/criar-material")}
-                            className="hover:text-gray-300 hover:cursor-pointer"
-                        >
-                            <i className="bi bi-plus-circle"></i> Criar Material
-                        </button>
-
-                    </>
-                )}
-                {admin && (
                     <button
-                        onClick={() => navigate("/pendentes")}
-                        className="hover:text-gray-300 hover:cursor-pointer"
+                        className="flex items-center gap-2 hover:text-gray-300"
                     >
-                        <i className="bi bi-check2-circle"></i> Aprovações
+                        <i className="bi bi-book"></i>
+                        Cursos
+                        <i className="bi bi-chevron-down text-xs"></i>
                     </button>
-                )}
+
+                    <div
+                        className="absolute left-0 mt-2 w-56 bg-gray-700 text-gray-300 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+                    >
+
+                        <button
+                            onClick={() => navigate("/cursos")}
+                            className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                        >
+                            📚 Todos os Cursos
+                        </button>
+
+                        {podeCriar && (
+                            <>
+                                <button
+                                    onClick={() => navigate("/meus-cursos")}
+                                    className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                                >
+                                    📖 Meus Cursos
+                                </button>
+
+                                <button
+                                    onClick={() => navigate("/criar-curso")}
+                                    className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                                >
+                                    ➕ Propor Curso
+                                </button>
+
+                                <button
+                                    onClick={() => navigate("/criar-modulo")}
+                                    className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                                >
+                                    📂 Criar Módulo
+                                </button>
+
+                                <button
+                                    onClick={() => navigate("/criar-material")}
+                                    className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                                >
+                                    📄 Criar Material
+                                </button>
+                            </>
+                        )}
+
+                        {admin && (
+                            <>
+                                <hr />
+
+                                <button
+                                    onClick={() => navigate("/pendentes")}
+                                    className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                                >
+                                    ✅ Aprovações
+                                </button>
+                            </>
+                        )}
+
+                    </div>
+
+                </div>
+
             </div>
 
             {user.nome ? (

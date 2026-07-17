@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { ChevronDown, PlayCircle, FileText } from "lucide-react";
 import { GetCursoId } from "../service/cursoService";
 import { CriarMatricula, BuscarMatriculaCurso } from "../service/matriulaService";
+import { ConcluirMaterial } from "../service/materialService";
 
 interface Material {
     mat_id: number;
@@ -35,7 +36,8 @@ interface Curso {
 export default function DetalheCurso() {
     const [searchParam] = useSearchParams();
     const id = searchParam.get("id");
-
+    const [materialConcluido, setMaterialConcluido] =
+        useState(false);
     const userStorage = localStorage.getItem("user")
         ? JSON.parse(localStorage.getItem("user")!)
         : null;
@@ -50,6 +52,7 @@ export default function DetalheCurso() {
     const [matricula, setMatricula] = useState<{
         matriculado: boolean;
         progresso: number;
+        mac_id: number;
     } | null>(null);
 
     useEffect(() => {
@@ -72,14 +75,15 @@ export default function DetalheCurso() {
                         Number(id)
                     );
 
+
                     if (matriculaData) {
                         setMatricula({
                             matriculado: true,
                             progresso: matriculaData.progresso ?? 0,
+                            mac_id: matriculaData.mac_id,
                         });
                     }
 
-                    console.log("teste:", matricula);
                 }
             } catch (error) {
                 console.error(error);
@@ -91,6 +95,71 @@ export default function DetalheCurso() {
 
     const toggleModulo = (id: number) => {
         setModuloAberto(moduloAberto === id ? null : id);
+    };
+
+    async function concluirMaterial(matId: number, macId: number) {
+        try {
+
+            const data = await ConcluirMaterial(matId, macId);
+
+            setMatricula((prev) => {
+                if (!prev) return prev;
+
+                return {
+                    ...prev,
+                    progresso: data.progresso,
+                };
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleVideoProgress = async (
+        e: React.SyntheticEvent<HTMLVideoElement>
+    ) => {
+
+        if (
+            !materialSelecionado ||
+            !matricula ||
+            materialConcluido
+        ) return;
+
+        const video = e.currentTarget;
+
+        if (!video.duration) return;
+
+        const percentual =
+            (video.currentTime / video.duration) * 100;
+
+        if (percentual < 95) return;
+
+        setMaterialConcluido(true);
+
+
+
+        try {
+
+            const data = await ConcluirMaterial(
+                materialSelecionado.mat_id,
+                matricula.mac_id
+            );
+
+            setMatricula(prev =>
+                prev
+                    ? {
+                        ...prev,
+                        progresso: data.progresso,
+                    }
+                    : prev
+            );
+
+        } catch (err) {
+
+            console.error(err);
+
+        }
     };
 
     const handleComecarCurso = async () => {
@@ -145,14 +214,15 @@ export default function DetalheCurso() {
         if (tipo === "vídeo" || tipo === "video") {
             return (
                 <video
+                    key={materialSelecionado.mat_id}
                     controls
                     className="w-full h-[400px] rounded-2xl bg-black"
+                    onTimeUpdate={handleVideoProgress}
                 >
                     <source
                         src={materialSelecionado.mat_url}
                         type="video/mp4"
                     />
-                    Seu navegador não suporta vídeo.
                 </video>
             );
         }
@@ -171,10 +241,24 @@ export default function DetalheCurso() {
         // pdf
         if (tipo === "pdf") {
             return (
-                <iframe
-                    src={materialSelecionado.mat_url}
-                    className="w-full h-[600px] rounded-2xl border border-gray-800"
-                />
+                <>
+                    <iframe
+                        src={materialSelecionado.mat_url}
+                        className="w-full h-[600px] rounded-2xl border border-gray-800"
+                    />
+
+                    <button
+                        onClick={() =>
+                            concluirMaterial(
+                                materialSelecionado.mat_id,
+                                matricula!.mac_id
+                            )
+                        }
+                        className="mt-4 bg-green-600 px-4 py-2 rounded"
+                    >
+                        Marcar como concluído
+                    </button>
+                </>
             );
         }
 
@@ -271,8 +355,9 @@ export default function DetalheCurso() {
                                                             <button
                                                                 key={conteudo.mat_id}
                                                                 onClick={() => {
-                                                                    setMaterialSelecionado(conteudo)
-                                                                    scrollToTop()
+                                                                    setMaterialSelecionado(conteudo);
+                                                                    setMaterialConcluido(false);
+                                                                    scrollToTop();
                                                                 }}
                                                                 className={`w-full flex items-center justify-between bg-gray-800 p-4 rounded-xl hover:text-blue-400 hover:bg-gray-700 hover:cursor-pointer transition ${materialSelecionado?.mat_id === conteudo.mat_id ? "bg-blue-900 text-blue-400" : ""}`}
                                                             >

@@ -74,7 +74,8 @@ export default function RegisterProfessor() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="grid grid-cols-2">
-              <div className="flex flex-col gap-4 m-2">
+              <div className="flex flex-col gap-1 m-2">
+                <label htmlFor="usu_nome">Nome</label>
                 <input
                   type="text"
                   name="usu_nome"
@@ -84,6 +85,7 @@ export default function RegisterProfessor() {
                   className="p-3 rounded-lg bg-gray-700 outline-none"
                   required
                 />
+                <label htmlFor="usu_email">Email</label>
                 <input
                   type="email"
                   name="usu_email"
@@ -93,6 +95,7 @@ export default function RegisterProfessor() {
                   className="p-3 rounded-lg bg-gray-700 outline-none"
                   required
                 />
+                <label htmlFor="usu_senha">Senha</label>
                 <input
                   type="password"
                   name="usu_senha"
@@ -102,6 +105,7 @@ export default function RegisterProfessor() {
                   className="p-3 rounded-lg bg-gray-700 outline-none"
                   required
                 />
+                <label htmlFor="usu_proposta">Proposta de curso</label>
                 <input
                   type="text"
                   name="usu_proposta"
@@ -113,9 +117,9 @@ export default function RegisterProfessor() {
                 />
               </div>
 
-              <div className="flex flex-col gap-4 m-2">
+              <div className="flex flex-col gap-1 m-2">
                 <div className="flex flex-col gap-1">
-                  <label htmlFor="">Upload Currículo PDF</label>
+                  <label htmlFor="usu_curriculum">Upload Currículo PDF</label>
                   <input
                     type="file"
                     accept=".pdf"
@@ -124,6 +128,7 @@ export default function RegisterProfessor() {
                   />
                 </div>
 
+                <label htmlFor="usu_lattes">Link currículo lattes</label>
                 <input
                   type="text"
                   name="usu_lattes"
@@ -131,8 +136,13 @@ export default function RegisterProfessor() {
                   value={form.usu_lattes}
                   onChange={handleChange}
                   className="p-3 rounded-lg bg-gray-700 outline-none"
-                  required
                 />
+
+                <p className="text-sm text-gray-400">
+                  Dúvidas? Entre em contato com a equipe de suporte através do e-mail: <a href="mailto:teste@gmail.com" className="text-blue-400">
+                    teste@gmail.com
+                  </a>
+                </p>
 
               </div>
               <button

@@ -22,6 +22,9 @@ type CursoPendente = {
     usu_usuario?: {
         usu_nome: string;
         usu_email: string;
+        usu_curriculo: string;
+        usu_lattes: string;
+        usu_proposta: string;
     };
 };
 
@@ -363,7 +366,7 @@ export default function AprovacaoUsuarios() {
                     </div>
                 )}
 
-                <hr className="mt-12"/>
+                <hr className="mt-12" />
 
                 <div className="mt-12">
 
@@ -434,11 +437,32 @@ export default function AprovacaoUsuarios() {
 
                                             </div>
 
-                                            <p className="text-gray-400 mt-4">
+                                            <p className="text-gray-400 mt-4" >
                                                 {
                                                     curso.cur_descricao
                                                 }
                                             </p>
+
+                                            <h3 className="text-sm uppercase tracking-wide text-gray-500 mb-2 mt-2">
+                                                Currículo
+                                            </h3>
+
+                                            <div className="bg-gray-950 border border-gray-800 rounded-xl p-4">
+                                                {curso.usu_usuario?.usu_curriculo ? (
+                                                    <a
+                                                        href={curso.usu_usuario.usu_curriculo}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-400 hover:text-blue-300 underline"
+                                                    >
+                                                        Baixar currículo
+                                                    </a>
+                                                ) : (
+                                                    <p className="text-gray-300">
+                                                        Nenhum currículo encontrado.
+                                                    </p>
+                                                )}
+                                            </div>
 
                                             <h3 className="text-sm uppercase tracking-wide text-gray-500 mb-2 mt-2">
                                                 Público alvo
@@ -543,6 +567,6 @@ export default function AprovacaoUsuarios() {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

@@ -26,8 +26,15 @@ export default function Login() {
 
             localStorage.setItem("user", JSON.stringify(response.user));
 
-            navigate("/cursos");
+            console.log("teste retorno: ", response.user.tiu_id);
 
+            if (response.user.tiu_id == 1) {
+                navigate("/pendentes");
+            } else if (response.user.tiu_id == 2) {
+                navigate("/meus-cursos");
+            } else {
+                navigate("/cursos");
+            }
         } catch (error: any) {
             console.error(error);
 

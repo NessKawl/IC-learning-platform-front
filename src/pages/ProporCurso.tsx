@@ -16,10 +16,17 @@ export default function CriarCurso() {
     });
 
     const [file, setFile] = useState<File | null>(null);
+    const [conteudoModulo, setConteudoModulo] = useState<File | null>(null);
 
     function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files && e.target.files[0]) {
             setFile(e.target.files[0]);
+        }
+    }
+
+    function handleConteudoChange(e: React.ChangeEvent<HTMLInputElement>) {
+        if (e.target.files?.[0]) {
+            setConteudoModulo(e.target.files[0]);
         }
     }
 
@@ -61,6 +68,9 @@ export default function CriarCurso() {
         );
 
         formData.append("file", file);
+        if (conteudoModulo) {
+            formData.append("conteudoModulo", conteudoModulo);
+        }
         await CreateCurso(formData);
 
         alert("Curso criado com sucesso!");
@@ -131,31 +141,16 @@ export default function CriarCurso() {
                                     className="p-3 rounded-lg bg-gray-700 outline-none"
                                     required
                                 />
-                                <input
-                                    type="text"
-                                    name="cur_n_modulos"
-                                    placeholder="Número de módulos"
-                                    value={form.cur_n_modulos}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    name="cur_conteudo_modulos"
-                                    placeholder="Conteúdo módulos"
-                                    value={form.cur_conteudo_modulos}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                />
-                                <input
-                                    type="text"
-                                    name="cur_carga_horaria_modulos"
-                                    placeholder="Carga horária dos módulos"
-                                    value={form.cur_carga_horaria_modulos}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                />
+                                <div className="flex flex-col gap-1">
+                                    <label>Conteúdo do módulo</label>
+
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar,.mp4"
+                                        onChange={handleConteudoChange}
+                                        className="p-3 rounded-lg bg-gray-700 outline-none"
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -168,7 +163,7 @@ export default function CriarCurso() {
                             className="p-3 rounded-lg bg-gray-700 outline-none"
                             required
                         /> */}
-                        <div className="flex flex-col gap-1  m-auto">
+                        {/* <div className="flex flex-col gap-1  m-auto">
                             <label htmlFor="">Upload currículo</label>
                             <input
                                 type="file"
@@ -176,12 +171,12 @@ export default function CriarCurso() {
                                 onChange={handleFileChange}
                                 className="p-3 rounded-lg bg-gray-700 outline-none"
                             />
-                        </div>
+                        </div> */}
                         <button
                             type="submit"
                             className="bg-blue-600 p-3 rounded-lg hover:bg-blue-700 mt-4"
                         >
-                            Criar Curso
+                            Propor Curso
                         </button>
                     </form>
 

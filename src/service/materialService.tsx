@@ -16,3 +16,18 @@ export const CreateMaterial = async (
 
     return response.data;
 };
+
+export const ConcluirMaterial = async (
+    matId: number,
+    macId: number
+) => {
+
+    const response = await api.post(
+        `/material/material/${matId}/concluir`,
+        {
+            mac_id: macId,
+        }
+    );
+
+    return response.data;
+};

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { ChevronDown, PlayCircle, FileText } from "lucide-react";
+import { ChevronDown, PlayCircle, FileText, ClipboardCheck } from "lucide-react";
 import { GetCursoId } from "../service/cursoService";
 import { CriarMatricula, BuscarMatriculaCurso } from "../service/matriulaService";
 import { ConcluirMaterial } from "../service/materialService";
+import { IniciarProva } from "../service/avaliacaoService";
 
 interface Material {
     mat_id: number;
@@ -17,14 +18,23 @@ interface Material {
     };
 }
 
+interface Avaliacao {
+    ava_id: number;
+    ava_titulo: string;
+    respondida?: boolean;
+    nota?: number;
+    acertos?: number;
+}
+
 interface Modulo {
     mod_id: number;
     mod_titulo: string;
     mod_descricao: string;
 
     materais: Material[];
-}
 
+    avaliacao?: Avaliacao | null;
+}
 interface Curso {
     cur_titulo: string;
     cur_descricao: string;
@@ -49,6 +59,20 @@ export default function DetalheCurso() {
     const [materialSelecionado, setMaterialSelecionado] = useState<Material | null>(null);
 
 
+    const iniciarProva = async (avaId: number) => {
+
+        try {
+
+            const prova = await IniciarProva(avaId);
+
+            navigate(`/avaliacao/${prova.tentativaId}`);
+
+        } catch (err) {
+            console.error(err);
+        }
+
+    };
+
     const [matricula, setMatricula] = useState<{
         matriculado: boolean;
         progresso: number;
@@ -62,8 +86,7 @@ export default function DetalheCurso() {
             try {
                 const data = await GetCursoId(id);
                 setCurso(data);
-
-                // verifica matrícula se usuário estiver logado
+                console.log(JSON.stringify(data, null, 2));       // verifica matrícula se usuário estiver logado
                 const userStorage = localStorage.getItem("user");
 
                 if (userStorage) {
@@ -390,6 +413,94 @@ export default function DetalheCurso() {
                                                         <div className="text-gray-500 text-sm">
                                                             Nenhum material neste módulo
                                                         </div>
+                                                    )}
+                                                    {modulo.avaliacao && (
+
+                                                        <button
+                                                            onClick={() => {
+
+                                                                if (modulo.avaliacao?.respondida) {
+
+                                                                    navigate(`/resultado/${modulo.avaliacao.ava_id}`);
+
+                                                                } else {
+
+                                                                    iniciarProva(modulo.avaliacao!.ava_id);
+
+                                                                }
+
+                                                            }}
+                                                            className="w-full flex items-center justify-between
+                   bg-indigo-900/40
+                   border border-indigo-700
+                   hover:bg-indigo-800
+                   p-4
+                   rounded-xl
+                   transition"
+                                                        >
+
+                                                            <div className="flex items-center gap-3">
+
+                                                                <ClipboardCheck size={22} />
+
+                                                                <div className="text-left">
+
+                                                                    <p className="font-medium">
+                                                                        {modulo.avaliacao.ava_titulo}
+                                                                    </p>
+
+                                                                    <p className="text-sm text-gray-300">
+                                                                        {modulo.avaliacao.respondida
+                                                                            ? "Última tentativa"
+                                                                            : "Atividade Avaliativa"}
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div className="text-right">
+
+                                                                {!modulo.avaliacao.respondida ? (
+
+                                                                    <span className="text-sm text-indigo-300">
+                                                                        Responder
+                                                                    </span>
+
+                                                                ) : (
+
+                                                                    <>
+                                                                        <p className="font-semibold">
+                                                                            Nota {modulo.avaliacao.nota?.toFixed(1)}
+                                                                        </p>
+
+                                                                        <p
+                                                                            className={`text-sm ${modulo.avaliacao.nota! >= 7
+                                                                                ? "text-green-400"
+                                                                                : "text-red-400"
+                                                                                }`}
+                                                                        >
+                                                                            {modulo.avaliacao.nota! >= 7
+                                                                                ? "Aprovado"
+                                                                                : "Reprovado"}
+                                                                        </p>
+
+                                                                        <p className="text-xs text-gray-400">
+                                                                            {modulo.avaliacao.acertos} acertos
+                                                                        </p>
+
+                                                                        <p className="text-xs text-indigo-300 mt-1">
+                                                                            {modulo.avaliacao.nota! >= 7
+                                                                                ? "Ver resultado"
+                                                                                : "Refazer"}
+                                                                        </p>
+                                                                    </>
+
+                                                                )}
+
+                                                            </div>
+
+                                                        </button>
+
                                                     )}
                                                 </div>
                                             </div>

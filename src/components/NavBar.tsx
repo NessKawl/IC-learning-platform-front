@@ -101,6 +101,12 @@ export default function NavBar() {
                                 >
                                     📄 Criar Material
                                 </button>
+                                <button
+                                    onClick={() => navigate("/criar-avaliacao")}
+                                    className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                                >
+                                    📄 Criar Avaliação
+                                </button>
                             </>
                         )}
 

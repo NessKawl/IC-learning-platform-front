@@ -141,6 +141,16 @@ export default function CriarCurso() {
                                     className="p-3 rounded-lg bg-gray-700 outline-none"
                                     required
                                 />
+
+                                <input
+                                    type="text"
+                                    name="cur_n_modulos"
+                                    placeholder="Número de módulos"
+                                    value={form.cur_n_modulos}
+                                    onChange={handleChange}
+                                    className="p-3 rounded-lg bg-gray-700 outline-none"
+                                    required
+                                />
                                 <div className="flex flex-col gap-1">
                                     <label>Conteúdo do módulo</label>
 

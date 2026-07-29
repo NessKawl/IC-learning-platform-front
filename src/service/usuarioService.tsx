@@ -55,5 +55,11 @@ export const usuarioService = {
             );
 
         return response.data;
+    },
+
+    async GetEstatisticasUsuarios() {
+        const { data } = await api.get("/usuario/estatisticas");
+
+        return data;
     }
 };

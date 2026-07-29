@@ -492,7 +492,7 @@ export default function AprovacaoUsuarios() {
 
                                             </div>
 
-                                            <h3 className="text-sm uppercase tracking-wide text-gray-500 mb-2 mt-2">
+                                            {/* <h3 className="text-sm uppercase tracking-wide text-gray-500 mb-2 mt-2">
                                                 Carga horária
                                             </h3>
 
@@ -503,7 +503,7 @@ export default function AprovacaoUsuarios() {
                                                         : "Carga horária não encontrada."}
                                                 </p>
 
-                                            </div>
+                                            </div> */}
 
                                             <h3 className="text-sm uppercase tracking-wide text-gray-500 mb-2 mt-2">
                                                 Conteúdo módulos
@@ -511,10 +511,14 @@ export default function AprovacaoUsuarios() {
 
                                             <div className="bg-gray-950 border border-gray-800 rounded-xl p-4 ">
                                                 <p className="text-gray-300 leading-relaxed">
-                                                    {
-                                                        curso.cur_conteudo_modulos ||
-                                                        "Conteúdo não encontrado."
-                                                    }
+                                                    <a
+                                                        href={curso.cur_conteudo_modulos}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-blue-400 hover:text-blue-300 underline"
+                                                    >
+                                                        Baixar conteúdo dos módulos
+                                                    </a>
                                                 </p>
 
                                             </div>

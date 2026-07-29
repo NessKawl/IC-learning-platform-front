@@ -102,3 +102,13 @@ export const CreateCurso =
 
         return response.data;
     };
+
+export const BuscaCursoPorTitulo = async (titulo: string) => {
+
+    const response =
+        await api.get(
+            `/curso/cursos/${titulo}`
+        );
+
+    return response.data;
+}

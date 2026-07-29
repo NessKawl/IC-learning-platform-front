@@ -12,6 +12,8 @@ import AreaCandidato from "../pages/AreaCandidato";
 import RegisterProfessor from "../pages/RegisterProfessor";
 import UsuariosPendentes from "../pages/Pendentes";
 import MeusCursos from "../pages/MeusCursos";
+import CriarAvaliacao from "../pages/CriarAvaliacao";
+import Avaliacao from "../pages/Avaliacao";
 
 export default function AppRoutes() {
   return (
@@ -21,7 +23,7 @@ export default function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cursos" element={<Cursos />} />
-        <Route path="/criar-curso" element={<CriarCurso />}></Route>
+        <Route path="/criar-curso" element={<CriarCurso />} />
         <Route path="/detalhe-curso" element={<DetalheCurso />} />
         <Route path="/criar-modulo" element={<CriarModulo />} />
         <Route path="/criar-material" element={<CriarMaterial />} />
@@ -29,6 +31,8 @@ export default function AppRoutes() {
         <Route path="/register-professor" element={<RegisterProfessor />} />
         <Route path="/pendentes" element={<UsuariosPendentes />} />
         <Route path="/meus-cursos" element={<MeusCursos />} />
+        <Route path="/criar-avaliacao" element={<CriarAvaliacao />} />
+        <Route path="//avaliacao/:tentativaId" element={<Avaliacao />} />
       </Routes>
     </HashRouter>
   );

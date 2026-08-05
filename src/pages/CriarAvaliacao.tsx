@@ -41,7 +41,7 @@ export default function CriarAvaliacao() {
         mod_id: "",
         ava_titulo: "",
         ava_tipo: "QUIZ",
-        ava_tempo_limite: 30,
+        ava_tempo_limite: "",
         proctoring: false
     });
 
@@ -179,7 +179,7 @@ export default function CriarAvaliacao() {
 
             ava_tipo: form.ava_tipo,
 
-            ava_tempo_limite: form.ava_tempo_limite,
+            ava_tempo_limite: Number(form.ava_tempo_limite),
 
             proctoring: form.proctoring,
 
@@ -276,6 +276,14 @@ export default function CriarAvaliacao() {
                             value={form.ava_titulo}
                             onChange={handleChange}
                             placeholder="Título da avaliação"
+                            className="w-full p-4 rounded-xl bg-gray-800"
+                        />
+
+                        <input
+                            name="ava_tempo_limite"
+                            value={form.ava_tempo_limite}
+                            onChange={handleChange}
+                            placeholder="Tempo limite questões (minutos)"
                             className="w-full p-4 rounded-xl bg-gray-800"
                         />
 

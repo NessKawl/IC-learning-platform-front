@@ -14,6 +14,7 @@ import UsuariosPendentes from "../pages/Pendentes";
 import MeusCursos from "../pages/MeusCursos";
 import CriarAvaliacao from "../pages/CriarAvaliacao";
 import Avaliacao from "../pages/Avaliacao";
+import ResultadoAvaliacao from "../pages/ResultadoAvaliacao";
 
 export default function AppRoutes() {
   return (
@@ -33,6 +34,7 @@ export default function AppRoutes() {
         <Route path="/meus-cursos" element={<MeusCursos />} />
         <Route path="/criar-avaliacao" element={<CriarAvaliacao />} />
         <Route path="//avaliacao/:tentativaId" element={<Avaliacao />} />
+        <Route path="/resultado/:id" element={<ResultadoAvaliacao />} />
       </Routes>
     </HashRouter>
   );

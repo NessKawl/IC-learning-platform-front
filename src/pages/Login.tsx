@@ -24,6 +24,8 @@ export default function Login() {
 
             localStorage.setItem("token", response.access_token);
 
+            console.log(response.access_token);
+
             localStorage.setItem("user", JSON.stringify(response.user));
 
             console.log("teste retorno: ", response.user.tiu_id);

@@ -24,6 +24,8 @@ interface Avaliacao {
     respondida?: boolean;
     nota?: number;
     acertos?: number;
+
+    tentativa_id?: number;
 }
 
 interface Modulo {
@@ -419,14 +421,10 @@ export default function DetalheCurso() {
                                                         <button
                                                             onClick={() => {
 
-                                                                if (modulo.avaliacao?.respondida) {
-
-                                                                    navigate(`/resultado/${modulo.avaliacao.ava_id}`);
-
+                                                                if (modulo.avaliacao?.respondida || modulo.avaliacao?.tentativa_id) {
+                                                                    navigate(`/resultado/${modulo.avaliacao.tentativa_id}`);
                                                                 } else {
-
                                                                     iniciarProva(modulo.avaliacao!.ava_id);
-
                                                                 }
 
                                                             }}
@@ -489,9 +487,7 @@ export default function DetalheCurso() {
                                                                         </p>
 
                                                                         <p className="text-xs text-indigo-300 mt-1">
-                                                                            {modulo.avaliacao.nota! >= 7
-                                                                                ? "Ver resultado"
-                                                                                : "Refazer"}
+                                                                            Ver resultado
                                                                         </p>
                                                                     </>
 

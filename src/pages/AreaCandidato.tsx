@@ -39,7 +39,7 @@ export default function AreaCandidato() {
 
                 const response =
                     await fetch(
-                        "http://localhost:3000/area-candidato/me",
+                        "https://api-ic-93507123097.southamerica-east1.run.app/area-candidato/me",
                         {
                             headers: {
                                 Authorization:

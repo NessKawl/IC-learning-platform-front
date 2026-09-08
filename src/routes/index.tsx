@@ -1,5 +1,5 @@
 // src/routes/index.tsx
-import { BrowserRouter, Routes, Route, HashRouter } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
@@ -15,6 +15,7 @@ import MeusCursos from "../pages/MeusCursos";
 import CriarAvaliacao from "../pages/CriarAvaliacao";
 import Avaliacao from "../pages/Avaliacao";
 import ResultadoAvaliacao from "../pages/ResultadoAvaliacao";
+import SolicitacaoProva from "../pages/SolicitacaoProva";
 
 export default function AppRoutes() {
   return (
@@ -35,6 +36,7 @@ export default function AppRoutes() {
         <Route path="/criar-avaliacao" element={<CriarAvaliacao />} />
         <Route path="//avaliacao/:tentativaId" element={<Avaliacao />} />
         <Route path="/resultado/:id" element={<ResultadoAvaliacao />} />
+        <Route path="/pendentes-prova" element={<SolicitacaoProva />} />
       </Routes>
     </HashRouter>
   );

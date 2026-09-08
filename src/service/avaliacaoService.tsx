@@ -99,3 +99,57 @@ export async function BuscarQtdTentativas(avaliacaoId: number,) {
 
     return response.data;
 }
+
+export async function BuscarSolicitacoesRevisaoProfessor() {
+
+    const token = localStorage.getItem("token");
+
+    const response = await api.get(
+        "/avaliacao/revisoes/professor",
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    return response.data;
+}
+
+export async function AprovarSolicitacaoRevisao(
+    revisaoId: number
+) {
+
+    const token = localStorage.getItem("token");
+
+    const response = await api.post(
+        `/avaliacao/revisoes/${revisaoId}/aprovar`,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    return response.data;
+}
+
+export async function RejeitarSolicitacaoRevisao(
+    revisaoId: number
+) {
+
+    const token = localStorage.getItem("token");
+
+    const response = await api.post(
+        `/avaliacao/revisoes/${revisaoId}/rejeitar`,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    return response.data;
+}

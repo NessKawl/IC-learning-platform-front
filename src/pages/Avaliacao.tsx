@@ -211,10 +211,7 @@ export default function Avaliacao() {
 
     }
 
-    function fecharResultado() {
-        setResultadoModal(null);
-        navigate(-1);
-    }
+    function fecharResultado() {setResultadoModal(null);navigate(-2);}
 
     const { tentativaId } = useParams();
 

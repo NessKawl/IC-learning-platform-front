@@ -1,6 +1,6 @@
 // src/pages/Courses.tsx
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { GetCursos } from "../service/cursoService";
 import NavBar from "../components/NavBar";
 import { usuarioService } from "../service/usuarioService";
@@ -28,22 +28,22 @@ export default function Cursos() {
     useEffect(() => {
         const userStorage = localStorage.getItem("user");
 
-        if (userStorage) {
-            setUser(JSON.parse(userStorage));
-        }
+        // if (userStorage) {
+        //     setUser(JSON.parse(userStorage));
+        // }
     }, []);
 
     const userStorage = JSON.parse(localStorage.getItem("user") || "{}");
 
-    const [estatisticas, setEstatisticas] = useState({
-        alunos: 0,
-        professores: 0,
-    });
+    // const [estatisticas, setEstatisticas] = useState({
+    //     alunos: 0,
+    //     professores: 0,
+    // });
 
     useEffect(() => {
         async function carregarEstatisticas() {
             const data = await usuarioService.GetEstatisticasUsuarios();
-            setEstatisticas(data);
+            // setEstatisticas(data);
         }
 
         carregarEstatisticas();
@@ -53,10 +53,10 @@ export default function Cursos() {
         function atualizarUsuario() {
             const updatedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-            setUser({
-                nome: updatedUser.usu_nome || "",
-                email: updatedUser.usu_email || ""
-            });
+            // setUser({
+            //     nome: updatedUser.usu_nome || "",
+            //     email: updatedUser.usu_email || ""
+            // });
         }
 
         atualizarUsuario();
@@ -69,10 +69,10 @@ export default function Cursos() {
     }, []);
 
     const navigate = useNavigate();
-    const [user, setUser] = useState({
-        nome: userStorage.usu_nome || "",
-        email: userStorage.usu_email || ""
-    });
+    // const [user, setUser] = useState({
+    //     nome: userStorage.usu_nome || "",
+    //     email: userStorage.usu_email || ""
+    // });
 
     const handleCardClick = (id: number) => {
         navigate(`/detalhe-curso?id=${id}`)

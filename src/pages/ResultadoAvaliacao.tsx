@@ -149,7 +149,6 @@ export default function ResultadoAvaliacao() {
         }
     };
 
-
     const solicitarRevisao = async () => {
 
         if (!resultado) return;
@@ -224,6 +223,14 @@ export default function ResultadoAvaliacao() {
         carregarResultado();
 
     }, [id]);
+
+    console.log("RESULTADO: ", resultado?.solicitacaoRevisao);
+
+    const statusRevisao = resultado?.solicitacaoRevisao?.status ?? null;
+
+    const revisaoPendente = statusRevisao === "PENDENTE";
+    const revisaoAprovada = statusRevisao === "APROVADA";
+    const revisaoRejeitada = statusRevisao === "REJEITADA";
 
 
     if (loading) {
@@ -462,22 +469,84 @@ export default function ResultadoAvaliacao() {
 
                 {/* QUESTÕES */}
 
-                {/* CONTROLE DE TENTATIVAS */}
+                {/* CONTROLE DE TENTATIVAS / REVISÃO */}
 
                 {!resultado.aprovado && (
                     <div className="mt-6">
 
-                        {/* MENOS DE 3 TENTATIVAS */}
+                        {/* ========================================= */}
+                        {/* REVISÃO APROVADA                         */}
+                        {/* ========================================= */}
 
-                        {qtdTentativas < 3 && (
+                        {revisaoAprovada && (
 
-                            <div className="
-                bg-blue-900/10
-                border
-                border-blue-800
-                rounded-xl
-                p-5
-            ">
+                            <div className="bg-green-900/20 border border-green-700 rounded-xl p-5">
+
+                                <div className="flex items-center gap-3">
+
+                                    <CheckCircle
+                                        className="text-green-400"
+                                        size={25}
+                                    />
+
+                                    <p className="font-semibold text-green-400">
+                                        Solicitação aprovada
+                                    </p>
+
+                                </div>
+
+                                <p className="text-sm text-gray-400 mt-2">
+                                    O professor autorizou uma nova tentativa.
+                                    Você pode refazer a avaliação.
+                                </p>
+
+                                <button
+                                    onClick={refazerAvaliacao}
+                                    disabled={loading}
+                                    className="mt-4 bg-green-600 hover:bg-green-700 disabled:opacity-50 px-5 py-3 rounded-xl font-semibold transition"
+                                >
+                                    {loading ? "Iniciando..." : "Refazer prova"}
+                                </button>
+
+                            </div>
+
+                        )}
+
+
+                        {/* ========================================= */}
+                        {/* REVISÃO PENDENTE                         */}
+                        {/* ========================================= */}
+
+                        {!revisaoAprovada && revisaoPendente && (
+
+                            <div className="bg-yellow-900/20 border border-yellow-700 rounded-xl p-5">
+
+                                <p className="font-semibold text-yellow-400">
+                                    Solicitação de revisão pendente
+                                </p>
+
+                                <p className="text-sm text-gray-400 mt-2">
+                                    Sua solicitação está aguardando a análise
+                                    do professor.
+                                </p>
+
+                                <p className="text-sm text-gray-500 mt-2">
+                                    Enquanto a solicitação estiver pendente,
+                                    não é possível enviar uma nova solicitação.
+                                </p>
+
+                            </div>
+
+                        )}
+
+
+                        {/* ========================================= */}
+                        {/* MENOS DE 3 TENTATIVAS                    */}
+                        {/* ========================================= */}
+
+                        {!revisaoAprovada && !revisaoPendente && qtdTentativas < 3 && (
+
+                            <div className="bg-blue-900/10 border border-blue-800 rounded-xlp-5">
 
                                 <p className="font-semibold text-blue-400">
                                     Você pode realizar uma nova tentativa
@@ -490,18 +559,10 @@ export default function ResultadoAvaliacao() {
 
                                 <button
                                     onClick={refazerAvaliacao}
-                                    className="
-                        mt-4
-                        bg-blue-600
-                        hover:bg-blue-700
-                        px-5
-                        py-3
-                        rounded-xl
-                        font-semibold
-                        transition
-                    "
+                                    disabled={loading}
+                                    className="mt-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 px-5 py-3 rounded-xl font-semibold transition"
                                 >
-                                    Refazer prova
+                                    {loading ? "Iniciando..." : "Refazer prova"}
                                 </button>
 
                             </div>
@@ -509,165 +570,120 @@ export default function ResultadoAvaliacao() {
                         )}
 
 
-                        {/* EXATAMENTE 3 TENTATIVAS */}
+                        {/* ========================================= */}
+                        {/* 3 TENTATIVAS - REJEITADA                */}
+                        {/* ========================================= */}
 
-                        {qtdTentativas === 3 && (
+                        {!revisaoAprovada &&
+                            !revisaoPendente &&
+                            qtdTentativas >= 3 &&
+                            revisaoRejeitada && (
 
-                            <>
+                                <div className="
+                    bg-red-900/20
+                    border
+                    border-red-700
+                    rounded-xl
+                    p-5
+                ">
 
-                                {resultado.solicitacaoRevisao?.status === "PENDENTE" ? (
+                                    <p className="font-semibold text-red-400">
+                                        Solicitação de revisão recusada
+                                    </p>
 
-                                    <div className="
-                        bg-yellow-900/20
-                        border
-                        border-yellow-700
-                        rounded-xl
-                        p-4
-                    ">
+                                    <p className="text-sm text-gray-400 mt-2">
+                                        O professor recusou sua solicitação anterior.
+                                        Você pode enviar uma nova solicitação.
+                                    </p>
 
-                                        <p className="font-semibold text-yellow-400">
-                                            Solicitação de revisão pendente
+                                    <button
+                                        onClick={solicitarRevisao}
+                                        disabled={solicitandoRevisao}
+                                        className="
+                            mt-4
+                            bg-indigo-600
+                            hover:bg-indigo-700
+                            disabled:opacity-50
+                            px-5
+                            py-3
+                            rounded-xl
+                            font-semibold
+                            transition
+                        "
+                                    >
+                                        {solicitandoRevisao
+                                            ? "Enviando solicitação..."
+                                            : "Solicitar nova revisão"}
+                                    </button>
+
+                                </div>
+
+                            )}
+
+
+                        {/* ========================================= */}
+                        {/* 3 TENTATIVAS - SEM SOLICITAÇÃO          */}
+                        {/* ========================================= */}
+
+                        {!revisaoAprovada &&
+                            !revisaoPendente &&
+                            !revisaoRejeitada &&
+                            qtdTentativas >= 3 && (
+
+                                <div className="
+                    bg-red-900/10
+                    border
+                    border-red-800
+                    rounded-xl
+                    p-5
+                ">
+
+                                    <p className="font-semibold text-red-400">
+                                        Limite de tentativas atingido
+                                    </p>
+
+                                    <p className="text-sm text-gray-400 mt-2">
+                                        Você realizou as 3 tentativas disponíveis
+                                        para esta avaliação.
+                                    </p>
+
+                                    <p className="text-sm text-gray-400 mt-2">
+                                        Para realizar uma nova tentativa, é necessário
+                                        solicitar autorização ao professor.
+                                    </p>
+
+                                    <button
+                                        onClick={solicitarRevisao}
+                                        disabled={solicitandoRevisao}
+                                        className="
+                            mt-4
+                            bg-indigo-600
+                            hover:bg-indigo-700
+                            disabled:opacity-50
+                            px-5
+                            py-3
+                            rounded-xl
+                            font-semibold
+                            transition
+                        "
+                                    >
+                                        {solicitandoRevisao
+                                            ? "Enviando solicitação..."
+                                            : "Solicitar ao professor"}
+                                    </button>
+
+                                    {mensagemRevisao && (
+                                        <p className="mt-3 text-sm text-gray-400">
+                                            {mensagemRevisao}
                                         </p>
+                                    )}
 
-                                        <p className="text-sm text-gray-400 mt-1">
-                                            Você atingiu o limite de 3 tentativas.
-                                            Sua solicitação foi enviada para análise do professor.
-                                        </p>
+                                </div>
 
-                                    </div>
-
-                                ) : resultado.solicitacaoRevisao?.status === "REJEITADA" ? (
-
-                                    <div className="
-                        bg-red-900/20
-                        border
-                        border-red-700
-                        rounded-xl
-                        p-5
-                    ">
-
-                                        <p className="font-semibold text-red-400">
-                                            Solicitação de revisão recusada
-                                        </p>
-
-                                        <p className="text-sm text-gray-400 mt-2">
-                                            O professor recusou sua solicitação.
-                                            Você pode solicitar uma nova revisão.
-                                        </p>
-
-                                        <button
-                                            onClick={solicitarRevisao}
-                                            disabled={solicitandoRevisao}
-                                            className="
-                                mt-4
-                                bg-indigo-600
-                                hover:bg-indigo-700
-                                disabled:opacity-50
-                                px-5
-                                py-3
-                                rounded-xl
-                                font-semibold
-                                transition
-                            "
-                                        >
-                                            {solicitandoRevisao
-                                                ? "Enviando solicitação..."
-                                                : "Solicitar nova revisão"}
-                                        </button>
-
-                                    </div>
-
-                                ) : (
-
-                                    <div className="
-                        bg-red-900/10
-                        border
-                        border-red-800
-                        rounded-xl
-                        p-5
-                    ">
-
-                                        <p className="font-semibold text-red-400">
-                                            Limite de tentativas atingido
-                                        </p>
-
-                                        <p className="text-sm text-gray-400 mt-2">
-                                            Você realizou as 3 tentativas disponíveis
-                                            para esta avaliação.
-                                        </p>
-
-                                        <p className="text-sm text-gray-400 mt-2">
-                                            Para realizar uma nova tentativa, é necessário
-                                            solicitar autorização ao professor.
-                                        </p>
-
-                                        <button
-                                            onClick={solicitarRevisao}
-                                            disabled={solicitandoRevisao}
-                                            className="
-                                mt-4
-                                bg-indigo-600
-                                hover:bg-indigo-700
-                                disabled:opacity-50
-                                px-5
-                                py-3
-                                rounded-xl
-                                font-semibold
-                                transition
-                            "
-                                        >
-                                            {solicitandoRevisao
-                                                ? "Enviando solicitação..."
-                                                : "Solicitar ao professor"}
-                                        </button>
-
-                                        {mensagemRevisao && (
-                                            <p className="mt-3 text-sm text-gray-400">
-                                                {mensagemRevisao}
-                                            </p>
-                                        )}
-
-                                    </div>
-
-                                )}
-
-                            </>
-
-                        )}
-
-
-                        {/* MAIS DE 3 TENTATIVAS */}
-
-                        {qtdTentativas > 3 && (
-
-                            <div className="
-                bg-gray-900
-                border
-                border-gray-700
-                rounded-xl
-                p-5
-            ">
-
-                                <p className="font-semibold text-gray-300">
-                                    Novas tentativas indisponíveis
-                                </p>
-
-                                <p className="text-sm text-gray-400 mt-2">
-                                    Você já ultrapassou o limite de tentativas permitido
-                                    para esta avaliação.
-                                </p>
-
-                                <p className="text-sm text-gray-500 mt-2">
-                                    Não é possível realizar uma nova tentativa.
-                                </p>
-
-                            </div>
-
-                        )}
+                            )}
 
                     </div>
                 )}
-
 
                 <div>
 

@@ -36,6 +36,7 @@ export default function NavBar() {
 
     // Controle de permissão
     const podeCriar = user.tipoUsuario === 1 || user.tipoUsuario === 2;
+    const professor = user.tipoUsuario === 2;
     const admin = user.tipoUsuario === 1;
     return (
         <nav className="bg-gray-800 flex justify-between items-center p-6 mx-auto">
@@ -106,6 +107,18 @@ export default function NavBar() {
                                     className="block w-full text-left px-4 py-3 hover:bg-gray-600"
                                 >
                                     📄 Criar Avaliação
+                                </button>
+                            </>
+                        )}
+
+                        {professor && (
+                            <>
+                                <hr />
+                                <button
+                                    onClick={() => navigate("/pendentes-prova")}
+                                    className="block w-full text-left px-4 py-3 hover:bg-gray-600"
+                                >
+                                    ✅ Solicitações de Provas
                                 </button>
                             </>
                         )}

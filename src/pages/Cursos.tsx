@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { GetCursos } from "../service/cursoService";
 import NavBar from "../components/NavBar";
-import { usuarioService } from "../service/usuarioService";
+// import { usuarioService } from "../service/usuarioService";
 interface Course {
     cur_id: number;
     cur_titulo: string;
@@ -25,48 +25,48 @@ export default function Cursos() {
 
 
 
-    useEffect(() => {
-        const userStorage = localStorage.getItem("user");
+    // useEffect(() => {
+    //     const userStorage = localStorage.getItem("user");
 
-        // if (userStorage) {
-        //     setUser(JSON.parse(userStorage));
-        // }
-    }, []);
+    //     // if (userStorage) {
+    //     //     setUser(JSON.parse(userStorage));
+    //     // }
+    // }, []);
 
-    const userStorage = JSON.parse(localStorage.getItem("user") || "{}");
+    // const userStorage = JSON.parse(localStorage.getItem("user") || "{}");
 
     // const [estatisticas, setEstatisticas] = useState({
     //     alunos: 0,
     //     professores: 0,
     // });
 
-    useEffect(() => {
-        async function carregarEstatisticas() {
-            const data = await usuarioService.GetEstatisticasUsuarios();
-            // setEstatisticas(data);
-        }
+    // useEffect(() => {
+    //     async function carregarEstatisticas() {
+    //         const data = await usuarioService.GetEstatisticasUsuarios();
+    //         // setEstatisticas(data);
+    //     }
 
-        carregarEstatisticas();
-    }, []);
+    //     carregarEstatisticas();
+    // }, []);
 
-    useEffect(() => {
-        function atualizarUsuario() {
-            const updatedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    // useEffect(() => {
+    //     function atualizarUsuario() {
+    //         // const updatedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-            // setUser({
-            //     nome: updatedUser.usu_nome || "",
-            //     email: updatedUser.usu_email || ""
-            // });
-        }
+    //         // setUser({
+    //         //     nome: updatedUser.usu_nome || "",
+    //         //     email: updatedUser.usu_email || ""
+    //         // });
+    //     }
 
-        atualizarUsuario();
+    //     atualizarUsuario();
 
-        window.addEventListener("storage", atualizarUsuario);
+    //     window.addEventListener("storage", atualizarUsuario);
 
-        return () => {
-            window.removeEventListener("storage", atualizarUsuario);
-        };
-    }, []);
+    //     return () => {
+    //         window.removeEventListener("storage", atualizarUsuario);
+    //     };
+    // }, []);
 
     const navigate = useNavigate();
     // const [user, setUser] = useState({

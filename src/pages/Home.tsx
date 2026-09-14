@@ -39,7 +39,7 @@ export default function Home() {
           <div>
 
             <span className="bg-blue-500/20 text-blue-300 px-4 py-2 rounded-full text-sm">
-              🚀 Mais de 100 cursos disponíveis
+              Mais de 100 cursos disponíveis
             </span>
 
             <h1 className="mt-6 text-6xl font-extrabold leading-tight">

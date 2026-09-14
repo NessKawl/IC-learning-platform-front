@@ -576,7 +576,7 @@ export default function ResultadoAvaliacao() {
 
                         {!revisaoAprovada &&
                             !revisaoPendente &&
-                            qtdTentativas >= 3 &&
+                            qtdTentativas >= 2 &&
                             revisaoRejeitada && (
 
                                 <div className="
@@ -620,15 +620,23 @@ export default function ResultadoAvaliacao() {
 
                             )}
 
+                        {/* Revisão aprovada e prova respondida sem nota mínima */}
+
+                        {qtdTentativas > 3 && (
+                            <div className="bg-red-900/10 border border-red-800 rounded-xl p-5">
+                                <p>Você ja realizou todas as tentativas disponíveis.</p>
+                            </div>
+                        )} 
+
 
                         {/* ========================================= */}
-                        {/* 3 TENTATIVAS - SEM SOLICITAÇÃO          */}
+                        {/* 2 TENTATIVAS - SEM SOLICITAÇÃO          */}
                         {/* ========================================= */}
 
                         {!revisaoAprovada &&
                             !revisaoPendente &&
                             !revisaoRejeitada &&
-                            qtdTentativas >= 3 && (
+                            qtdTentativas == 2 && (
 
                                 <div className="
                     bg-red-900/10
@@ -643,7 +651,7 @@ export default function ResultadoAvaliacao() {
                                     </p>
 
                                     <p className="text-sm text-gray-400 mt-2">
-                                        Você realizou as 3 tentativas disponíveis
+                                        Você realizou as 2 tentativas disponíveis
                                         para esta avaliação.
                                     </p>
 

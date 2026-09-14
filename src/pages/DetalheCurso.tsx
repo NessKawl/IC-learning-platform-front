@@ -281,7 +281,7 @@ export default function DetalheCurso() {
                         }
                         className="mt-4 bg-green-600 px-4 py-2 rounded"
                     >
-                        Marcar como concluído
+                        Leitura concluída
                     </button>
                 </>
             );
@@ -517,14 +517,14 @@ export default function DetalheCurso() {
                             <div className="space-y-4 text-gray-300">
                                 <div>
                                     <p className="text-gray-500 text-sm">
-                                        Módulos
+                                        Total de Módulos
                                     </p>
                                     <p>
                                         {curso.modulos?.length || 0}
                                     </p>
                                 </div>
 
-                                <div>
+                                {/* <div>
                                     <p className="text-gray-500 text-sm">
                                         Conteúdos
                                     </p>
@@ -536,7 +536,7 @@ export default function DetalheCurso() {
                                             0
                                         )}
                                     </p>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="mt-6">

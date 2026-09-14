@@ -34,22 +34,22 @@ export default function Home() {
 
         <div className="absolute inset-0 bg-gradient-to-r from-blue-700/20 to-cyan-500/10 blur-3xl"></div>
 
-        <div className="relative max-w-7xl mx-auto px-6 py-28 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-3 lg:px-6 py-12 lg:py-28 grid lg:grid-cols-2 gap-12 items-center">
 
-          <div>
+          <div className="">
 
             <span className="bg-blue-500/20 text-blue-300 px-4 py-2 rounded-full text-sm">
               Mais de 100 cursos disponíveis
             </span>
 
-            <h1 className="mt-6 text-6xl font-extrabold leading-tight">
+            <h1 className="mt-6 md:text-6xl text-3xl font-extrabold leading-tight">
               Aprenda habilidades para o
               <span className="text-blue-500">
                 {" "}mercado de trabalho
               </span>
             </h1>
 
-            <p className="mt-6 text-xl text-gray-400">
+            <p className="mt-6 md:text-xl text-lg text-gray-400">
               Cursos online com professores especializados.
               Aprenda no seu ritmo e receba certificado ao concluir.
             </p>
@@ -58,7 +58,7 @@ export default function Home() {
 
             <div className="mt-10 flex bg-slate-800 rounded-xl overflow-hidden">
 
-              <div className="flex items-center px-4">
+              <div className="flex items-center px-2">
                 <Search />
               </div>
 
@@ -66,7 +66,7 @@ export default function Home() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Qual curso você procura?"
-                className="flex-1 bg-transparent outline-none px-2 py-4"
+                className="flex-1 bg-transparent outline-none px-1 py-4"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     handleSearch();
@@ -83,18 +83,18 @@ export default function Home() {
 
             </div>
 
-            <div className="flex gap-5 mt-8">
+            <div className="flex gap-5 mt-8 justify-center lg:justify-start">
 
               <Link
                 to="/register"
-                className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold transition"
+                className="bg-blue-600 hover:bg-blue-700 px-4 py-4 rounded-xl font-semibold transition"
               >
                 Começar Agora
               </Link>
 
               <Link
                 to="/register-professor"
-                className="border border-slate-700 hover:bg-slate-800 px-8 py-4 rounded-xl"
+                className="border border-slate-700 hover:bg-slate-800 px-4 py-4 rounded-xl"
               >
                 Seja Professor
               </Link>
@@ -108,7 +108,7 @@ export default function Home() {
           <div className="hidden lg:flex justify-center">
 
             <img
-              src="/hero.png"
+              src="../../public/IC-LOGO.png"
               className="w-full max-w-lg"
             />
 

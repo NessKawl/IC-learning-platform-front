@@ -116,7 +116,7 @@ export default function Cursos() {
 
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-cyan-500/10 blur-3xl" />
 
-                    <div className="relative max-w-7xl mx-auto px-6 py-20">
+                    <div className="relative max-w-7xl mx-auto px-3 py-12 lg:py-24 lg:px-6">
 
                         <h1 className="text-5xl font-bold">
                             Explore nossos cursos
@@ -129,7 +129,7 @@ export default function Cursos() {
                         <form onSubmit={handleSearch} className="mt-8 flex">
                             <input
                                 placeholder="Pesquisar cursos..."
-                                className="flex-1 bg-slate-800 rounded-l-xl px-5 py-4 outline-none"
+                                className="flex-1 bg-slate-800 rounded-l-xl px-3 lg:px-5 py-4 outline-none"
                                 value={query}
                                 onChange={handleInputChange}
                             />
@@ -172,7 +172,7 @@ export default function Cursos() {
 
                 </div>
 
-                <section className="max-w-7xl mx-auto py-12">
+                <section className="max-w-7xl mx-auto py-12 px-6">
 
                     <div className="grid md:grid-cols-4 gap-6">
 
@@ -243,7 +243,7 @@ export default function Cursos() {
                         </p>
                     </div>
                 ) : (
-                    <div className="grid md:grid-cols-4 gap-6 mx-auto max-w-7xl" id="lista-cursos">
+                    <div className="grid md:grid-cols-4 gap-6 px-3 pb-6 mx-auto max-w-7xl" id="lista-cursos">
                         {cursosFiltrados.map((curso) => (
                             <div
                                 key={curso.cur_id}

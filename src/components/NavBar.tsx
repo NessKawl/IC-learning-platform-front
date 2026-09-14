@@ -70,7 +70,7 @@ export default function NavBar() {
                         onClick={() => navegar("/")}
                         className="hover:cursor-pointer"
                     >
-                        <img src="../../public/IC-LOGO2.png" alt="" className="size-20 w-auto" />
+                        <img src="https://i.imgur.com/iUVtxqI.png" alt="" className="size-20 w-auto" />
                     </button>
                 </h1>
 

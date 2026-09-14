@@ -108,7 +108,7 @@ export default function Home() {
           <div className="hidden lg:flex justify-center">
 
             <img
-              src="../../public/IC-LOGO.png"
+              src="https://i.imgur.com/0F7q4MG.png"
               className="w-full max-w-lg"
             />
 

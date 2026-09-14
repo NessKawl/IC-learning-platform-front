@@ -75,8 +75,16 @@ export default function Cursos() {
     // });
 
     const handleCardClick = (id: number) => {
-        navigate(`/detalhe-curso?id=${id}`)
-    }
+        const userStorage = localStorage.getItem("user");
+
+        if (!userStorage) {
+            alert("Faça login para acessar os detalhes do curso.");
+            navigate("/login");
+            return;
+        }
+
+        navigate(`/detalhe-curso?id=${id}`);
+    };
 
     const [searchParams] = useSearchParams();
     const [query, setQuery] = useState(searchParams.get("search") || "");

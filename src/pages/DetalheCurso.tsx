@@ -84,39 +84,41 @@ export default function DetalheCurso() {
     useEffect(() => {
         if (!id) return;
 
+        const userStorage = localStorage.getItem("user");
+
+        if (!userStorage) {
+            alert("Faça login para acessar os detalhes do curso.");
+            navigate("/login");
+            return;
+        }
+
         const fetchCurso = async () => {
             try {
+                const user = JSON.parse(userStorage);
+
                 const data = await GetCursoId(id);
+
                 setCurso(data);
-                console.log(JSON.stringify(data, null, 2));       // verifica matrícula se usuário estiver logado
-                const userStorage = localStorage.getItem("user");
 
-                if (userStorage) {
-                    const user = JSON.parse(userStorage);
+                const matriculaData = await BuscarMatriculaCurso(
+                    user.usu_id,
+                    Number(id)
+                );
 
-                    // Buscar matrícula do usuário no curso
-                    const matriculaData = await BuscarMatriculaCurso(
-                        user.usu_id,
-                        Number(id)
-                    );
-
-
-                    if (matriculaData) {
-                        setMatricula({
-                            matriculado: true,
-                            progresso: matriculaData.progresso ?? 0,
-                            mac_id: matriculaData.mac_id,
-                        });
-                    }
-
+                if (matriculaData) {
+                    setMatricula({
+                        matriculado: true,
+                        progresso: matriculaData.progresso ?? 0,
+                        mac_id: matriculaData.mac_id,
+                    });
                 }
             } catch (error) {
-                console.error(error);
+                console.error("Erro ao carregar curso:", error);
             }
         };
 
         fetchCurso();
-    }, [id]);
+    }, [id, navigate]);
 
     const toggleModulo = (id: number) => {
         setModuloAberto(moduloAberto === id ? null : id);

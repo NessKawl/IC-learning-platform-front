@@ -17,7 +17,7 @@ export default function Home() {
 
   const handleSearch = () => {
     if (!query.trim()) {
-      navigate("/courses");
+      navigate("/cursos");
       return;
     }
 

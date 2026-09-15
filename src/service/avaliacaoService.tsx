@@ -67,15 +67,13 @@ export async function BuscarResultadoTentativa(
 
 }
 
-export async function SolicitarRevisao(
-    tentativaId: number
-) {
+export async function SolicitarRevisao(tentativaId: number, justificativa: string) {
 
     const token = localStorage.getItem("token");
 
     const response = await api.post(
         `/avaliacao/tentativas/${tentativaId}/revisao`,
-        {},
+        { justificativa },
         {
             headers: {
                 Authorization: `Bearer ${token}`,

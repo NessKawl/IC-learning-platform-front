@@ -101,8 +101,7 @@ export default function SolicitacoesRevisao() {
 
             setLoading(true);
 
-            const data =
-                await BuscarSolicitacoesRevisaoProfessor();
+            const data = await BuscarSolicitacoesRevisaoProfessor();
 
             setSolicitacoes(data);
 
@@ -409,21 +408,13 @@ export default function SolicitacoesRevisao() {
 
                                                     <h2 className="text-xl font-bold">
 
-                                                        {
-                                                            solicitacao
-                                                                .usu_usuario
-                                                                .usu_nome
-                                                        }
+                                                        {solicitacao.usu_usuario.usu_nome}
 
                                                     </h2>
 
                                                     <p className="text-gray-500 text-sm">
 
-                                                        {
-                                                            solicitacao
-                                                                .usu_usuario
-                                                                .usu_email
-                                                        }
+                                                        {solicitacao.usu_usuario.usu_email}
 
                                                     </p>
 
@@ -459,11 +450,7 @@ export default function SolicitacoesRevisao() {
 
                                             <h2 className="text-lg font-bold">
 
-                                                {
-                                                    solicitacao
-                                                        .ava_avaliacao
-                                                        .ava_titulo
-                                                }
+                                                {solicitacao.ava_avaliacao.ava_titulo}
 
                                             </h2>
 
@@ -481,13 +468,7 @@ export default function SolicitacoesRevisao() {
 
                                                     <p className="text-gray-300 mt-1">
 
-                                                        {
-                                                            solicitacao
-                                                                .ava_avaliacao
-                                                                .modulo
-                                                                .cur_curso
-                                                                .cur_titulo
-                                                        }
+                                                        {solicitacao.ava_avaliacao.modulo.cur_curso.cur_titulo}
 
                                                     </p>
 
@@ -505,10 +486,7 @@ export default function SolicitacoesRevisao() {
                                                     <p className="text-gray-300 mt-1">
 
                                                         {
-                                                            solicitacao
-                                                                .ava_avaliacao
-                                                                .modulo
-                                                                .mod_titulo
+                                                            solicitacao.ava_avaliacao.modulo.mod_titulo
                                                         }
 
                                                     </p>
@@ -520,17 +498,13 @@ export default function SolicitacoesRevisao() {
 
                                                     <p className="text-xs text-gray-500 uppercase">
 
-                                                        Tipo
+                                                        Justificativa
 
                                                     </p>
 
                                                     <p className="text-gray-300 mt-1">
 
-                                                        {
-                                                            solicitacao
-                                                                .ava_avaliacao
-                                                                .ava_tipo
-                                                        }
+                                                        {solicitacao.rev_motivo || "Não informada"}
 
                                                     </p>
 

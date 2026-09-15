@@ -81,6 +81,9 @@ export default function ResultadoAvaliacao() {
     const [solicitandoRevisao, setSolicitandoRevisao] =
         useState(false);
 
+    const [justifiativa, setJustificativa] =
+        useState("");
+
     const [qtdTentativas, setQtdTentativas] = useState(0);
 
     const [mensagemRevisao, setMensagemRevisao] =
@@ -157,9 +160,7 @@ export default function ResultadoAvaliacao() {
 
             setSolicitandoRevisao(true);
 
-            await SolicitarRevisao(
-                resultado.tentativaId
-            );
+            await SolicitarRevisao(resultado.tentativaId, justifiativa);
 
             setMensagemRevisao(
                 "Solicitação enviada com sucesso. Aguarde a análise do professor."
@@ -285,14 +286,7 @@ export default function ResultadoAvaliacao() {
 
                 <button
                     onClick={() => navigate(-1)}
-                    className="
-                        flex
-                        items-center
-                        gap-2
-                        text-gray-400
-                        hover:text-white
-                        mb-8
-                    "
+                    className="flex items-center gap-2 text-gray-400 hover:text-white mb-8"
                 >
 
                     <ArrowLeft size={20} />
@@ -333,15 +327,7 @@ export default function ResultadoAvaliacao() {
                     {/* NOTA */}
 
                     <div
-                        className={`
-                            rounded-2xl
-                            p-6
-                            border
-                            ${resultado.aprovado
-                                ? "bg-green-900/20 border-green-700"
-                                : "bg-red-900/20 border-red-700"
-                            }
-                        `}
+                        className={`rounded-2xl p-6 border ${resultado.aprovado ? "bg-green-900/20 border-green-700" : "bg-red-900/20 border-red-700"}`}
                     >
 
                         <div className="flex items-center gap-3">
@@ -372,15 +358,7 @@ export default function ResultadoAvaliacao() {
 
 
                         <p
-                            className={`
-                                text-4xl
-                                font-bold
-                                mt-4
-                                ${resultado.aprovado
-                                    ? "text-green-400"
-                                    : "text-red-400"
-                                }
-                            `}
+                            className={`text-4xl font-bold mt-4 ${resultado.aprovado ? "text-green-400" : "text-red-400"}`}
                         >
 
                             {resultado.nota.toFixed(1)}
@@ -389,14 +367,7 @@ export default function ResultadoAvaliacao() {
 
 
                         <p
-                            className={`
-                                mt-2
-                                font-medium
-                                ${resultado.aprovado
-                                    ? "text-green-400"
-                                    : "text-red-400"
-                                }
-                            `}
+                            className={`mt-2 font-medium ${resultado.aprovado ? "text-green-400" : "text-red-400"}`}
                         >
 
                             {resultado.aprovado
@@ -409,13 +380,7 @@ export default function ResultadoAvaliacao() {
 
                     {/* ACERTOS */}
 
-                    <div className="
-                        bg-gray-900
-                        border
-                        border-gray-800
-                        rounded-2xl
-                        p-6
-                    ">
+                    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
 
                         <p className="text-gray-400">
                             Acertos
@@ -425,11 +390,7 @@ export default function ResultadoAvaliacao() {
 
                             {resultado.acertos}
 
-                            <span className="
-                                text-lg
-                                text-gray-500
-                                ml-2
-                            ">
+                            <span className="text-lg text-gray-500 ml-2">
                                 / {resultado.total}
                             </span>
 
@@ -440,13 +401,7 @@ export default function ResultadoAvaliacao() {
 
                     {/* PERCENTUAL */}
 
-                    <div className="
-                        bg-gray-900
-                        border
-                        border-gray-800
-                        rounded-2xl
-                        p-6
-                    ">
+                    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
 
                         <p className="text-gray-400">
                             Aproveitamento
@@ -544,7 +499,7 @@ export default function ResultadoAvaliacao() {
                         {/* MENOS DE 3 TENTATIVAS                    */}
                         {/* ========================================= */}
 
-                        {!revisaoAprovada && !revisaoPendente && qtdTentativas < 3 && (
+                        {!revisaoAprovada && !revisaoPendente && qtdTentativas < 2 && (
 
                             <div className="bg-blue-900/10 border border-blue-800 rounded-xlp-5">
 
@@ -576,16 +531,10 @@ export default function ResultadoAvaliacao() {
 
                         {!revisaoAprovada &&
                             !revisaoPendente &&
-                            qtdTentativas >= 2 &&
+                            qtdTentativas > 2 &&
                             revisaoRejeitada && (
 
-                                <div className="
-                    bg-red-900/20
-                    border
-                    border-red-700
-                    rounded-xl
-                    p-5
-                ">
+                                <div className="bg-red-900/20 border border-red-700 rounded-xl p-5">
 
                                     <p className="font-semibold text-red-400">
                                         Solicitação de revisão recusada
@@ -599,17 +548,7 @@ export default function ResultadoAvaliacao() {
                                     <button
                                         onClick={solicitarRevisao}
                                         disabled={solicitandoRevisao}
-                                        className="
-                            mt-4
-                            bg-indigo-600
-                            hover:bg-indigo-700
-                            disabled:opacity-50
-                            px-5
-                            py-3
-                            rounded-xl
-                            font-semibold
-                            transition
-                        "
+                                        className="mt-4 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 px-5 py-3 rounded-xl font-semibold transition"
                                     >
                                         {solicitandoRevisao
                                             ? "Enviando solicitação..."
@@ -626,7 +565,7 @@ export default function ResultadoAvaliacao() {
                             <div className="bg-red-900/10 border border-red-800 rounded-xl p-5">
                                 <p>Você ja realizou todas as tentativas disponíveis.</p>
                             </div>
-                        )} 
+                        )}
 
 
                         {/* ========================================= */}
@@ -638,13 +577,7 @@ export default function ResultadoAvaliacao() {
                             !revisaoRejeitada &&
                             qtdTentativas == 2 && (
 
-                                <div className="
-                    bg-red-900/10
-                    border
-                    border-red-800
-                    rounded-xl
-                    p-5
-                ">
+                                <div className="bg-red-900/10 border border-red-800 rounded-xl p-5">
 
                                     <p className="font-semibold text-red-400">
                                         Limite de tentativas atingido
@@ -660,24 +593,20 @@ export default function ResultadoAvaliacao() {
                                         solicitar autorização ao professor.
                                     </p>
 
+                                    <textarea
+                                        value={justifiativa}
+                                        onChange={(e) => setJustificativa(e.target.value)}
+                                        placeholder="Digite a justificativa para solicitar a revisão da avaliação..."
+                                        className="w-full min-h-[120px] rounded-xl border border-gray-700 bg-gray-900 p-4 text-white placeholder-gray-500 outline-none focus:border-blue-500 resize-none"
+                                        maxLength={1000}
+                                    />
+
                                     <button
                                         onClick={solicitarRevisao}
-                                        disabled={solicitandoRevisao}
-                                        className="
-                            mt-4
-                            bg-indigo-600
-                            hover:bg-indigo-700
-                            disabled:opacity-50
-                            px-5
-                            py-3
-                            rounded-xl
-                            font-semibold
-                            transition
-                        "
+                                        disabled={!justifiativa.trim() || solicitandoRevisao}
+                                        className="rounded-xl bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                                     >
-                                        {solicitandoRevisao
-                                            ? "Enviando solicitação..."
-                                            : "Solicitar ao professor"}
+                                        {solicitandoRevisao ? "Enviando..." : "Enviar solicitação"}
                                     </button>
 
                                     {mensagemRevisao && (
@@ -709,44 +638,27 @@ export default function ResultadoAvaliacao() {
 
                                 <div
                                     key={resposta.questaoId}
-                                    className={`
-                                        bg-gray-900
-                                        border
-                                        rounded-2xl
-                                        p-6
-                                        ${resposta.correta
-                                            ? "border-green-800"
-                                            : "border-red-800"
-                                        }
-                                    `}
+                                    className={`bg-gray-900 border rounded-2xl p-6 ${resposta.correta ? "border-green-800" : "border-red-800"}`}
                                 >
 
 
                                     {/* QUESTÃO */}
 
-                                    <div className="
-                                        flex
-                                        items-start
-                                        gap-4
-                                    ">
+                                    <div className="flex items-start gap-4">
 
                                         <div>
 
                                             {resposta.correta ? (
 
                                                 <CheckCircle
-                                                    className="
-                                                        text-green-400
-                                                    "
+                                                    className="text-green-400"
                                                     size={25}
                                                 />
 
                                             ) : (
 
                                                 <XCircle
-                                                    className="
-                                                        text-red-400
-                                                    "
+                                                    className="text-red-400"
                                                     size={25}
                                                 />
 
@@ -757,19 +669,12 @@ export default function ResultadoAvaliacao() {
 
                                         <div className="flex-1">
 
-                                            <p className="
-                                                text-sm
-                                                text-gray-500
-                                                mb-2
-                                            ">
+                                            <p className="text-sm text-gray-500 mb-2">
                                                 Questão {index + 1}
                                             </p>
 
 
-                                            <h3 className="
-                                                text-lg
-                                                font-semibold
-                                            ">
+                                            <h3 className="text-lg font-semibold">
 
                                                 {resposta.pergunta}
 
@@ -784,11 +689,7 @@ export default function ResultadoAvaliacao() {
 
                                     <div className="mt-6">
 
-                                        <p className="
-                                            text-sm
-                                            text-gray-500
-                                            mb-2
-                                        ">
+                                        <p className="text-sm text-gray-500 mb-2">
                                             Sua resposta
                                         </p>
 
@@ -797,22 +698,10 @@ export default function ResultadoAvaliacao() {
                                             .alternativaSelecionada ? (
 
                                             <div
-                                                className={`
-                                                    rounded-xl
-                                                    p-4
-                                                    border
-                                                    ${resposta.correta
-                                                        ? "bg-green-900/20 border-green-700"
-                                                        : "bg-red-900/20 border-red-700"
-                                                    }
-                                                `}
+                                                className={`rounded-xl p-4 border ${resposta.correta ? "bg-green-900/20 border-green-700" : "bg-red-900/20 border-red-700"}`}
                                             >
 
-                                                <div className="
-                                                    flex
-                                                    items-center
-                                                    gap-3
-                                                ">
+                                                <div className="flex items-center gap-3">
 
                                                     {resposta.correta ? (
 
@@ -847,12 +736,7 @@ export default function ResultadoAvaliacao() {
 
                                         ) : (
 
-                                            <div className="
-                                                bg-gray-800
-                                                rounded-xl
-                                                p-4
-                                                text-gray-400
-                                            ">
+                                            <div className="bg-gray-800 rounded-xl p-4 text-gray-400">
 
                                                 Não respondeu
 
@@ -868,34 +752,18 @@ export default function ResultadoAvaliacao() {
                                     {!resposta.correta && (
                                         <div className="mt-4">
 
-                                            <p className="
-                                                text-sm
-                                                text-gray-500
-                                                mb-2
-                                            ">
+                                            <p className="text-sm text-gray-500 mb-2">
                                                 Resposta correta
                                             </p>
 
 
-                                            <div className="
-                                                bg-green-900/20
-                                                border
-                                                border-green-700
-                                                rounded-xl
-                                                p-4
-                                            ">
+                                            <div className="bg-green-900/20 border border-green-700 rounded-xl p-4">
 
-                                                <div className="
-                                                    flex
-                                                    items-center
-                                                    gap-3
-                                                ">
+                                                <div className="flex items-center gap-3">
 
                                                     <CheckCircle
                                                         size={20}
-                                                        className="
-                                                            text-green-400
-                                                        "
+                                                        className="text-green-400"
                                                     />
 
                                                     <span>
@@ -927,23 +795,11 @@ export default function ResultadoAvaliacao() {
 
                 {/* BOTÃO FINAL */}
 
-                <div className="
-                    flex
-                    justify-center
-                    mt-10
-                ">
+                <div className="flex justify-center mt-10">
 
                     <button
                         onClick={() => navigate(-1)}
-                        className="
-                            bg-blue-600
-                            hover:bg-blue-700
-                            px-8
-                            py-3
-                            rounded-xl
-                            font-semibold
-                            transition
-                        "
+                        className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-semibold transition"
                     >
 
                         Voltar ao curso

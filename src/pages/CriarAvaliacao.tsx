@@ -171,8 +171,6 @@ export default function CriarAvaliacao() {
             questoes
         };
 
-        console.log(payload);
-
         await CreateAvaliacao({
 
             ava_titulo: form.ava_titulo,

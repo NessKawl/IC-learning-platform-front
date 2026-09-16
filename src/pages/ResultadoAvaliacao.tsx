@@ -132,8 +132,6 @@ export default function ResultadoAvaliacao() {
                 resultado.avaliacao.id
             );
 
-            console.log("Nova tentativa:", data);
-
             navigate(
                 `/avaliacao/${data.tentativaId}`
             );
@@ -224,8 +222,6 @@ export default function ResultadoAvaliacao() {
         carregarResultado();
 
     }, [id]);
-
-    console.log("RESULTADO: ", resultado?.solicitacaoRevisao);
 
     const statusRevisao = resultado?.solicitacaoRevisao?.status ?? null;
 

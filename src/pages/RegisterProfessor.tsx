@@ -62,8 +62,6 @@ export default function RegisterProfessor() {
       alert(response.message || "Usuário enviado para análise!");
       navigate("/login");
     } catch (error: any) {
-      const mensagem = error.response?.data?.message;
-
       console.error(
         "Erro no cadastro do professor:",
         error.response?.data ?? error.message

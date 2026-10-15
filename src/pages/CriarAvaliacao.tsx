@@ -164,13 +164,6 @@ export default function CriarAvaliacao() {
 
         e.preventDefault();
 
-        const payload = {
-
-            ...form,
-
-            questoes
-        };
-
         await CreateAvaliacao({
 
             ava_titulo: form.ava_titulo,

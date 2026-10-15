@@ -83,25 +83,16 @@ export const GetCursoId =
         return response.data;
     };
 
-export const CreateCurso =
-    async (
-        formData: FormData
-    ) => {
+export const CreateCurso = async (
+    formData: FormData
+) => {
+    const response = await api.post(
+        "/curso/register",
+        formData
+    );
 
-        const response =
-            await api.post(
-                "/curso/register",
-                formData,
-                {
-                    headers: {
-                        "Content-Type":
-                            "multipart/form-data",
-                    },
-                }
-            );
-
-        return response.data;
-    };
+    return response.data;
+};
 
 export const BuscaCursoPorTitulo = async (titulo: string) => {
 

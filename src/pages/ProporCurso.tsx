@@ -39,11 +39,15 @@ export default function CriarCurso() {
     const handleSubmit = async (
         event: React.FormEvent<HTMLFormElement>
     ) => {
-
         event.preventDefault();
 
         if (!file) {
-            alert("Selecione uma imagem");
+            alert("Selecione uma imagem para a capa");
+            return;
+        }
+
+        if (!conteudoModulo) {
+            alert("Selecione o arquivo do conteúdo do módulo");
             return;
         }
 
@@ -51,7 +55,6 @@ export default function CriarCurso() {
 
         formData.append("cur_titulo", form.cur_titulo);
         formData.append("cur_descricao", form.cur_descricao);
-
         formData.append("cur_publico", form.cur_publico);
         formData.append("cur_n_modulos", form.cur_n_modulos);
         formData.append(
@@ -59,22 +62,17 @@ export default function CriarCurso() {
             form.cur_conteudo_modulos
         );
         formData.append(
-            "cur_carga_horaria_modulos",
-            form.cur_carga_horaria_modulos
-        );
-        formData.append(
             "cur_forma_avaliacao",
             form.cur_forma_avaliacao
         );
 
+        // Arquivos enviados ao backend para upload no S3
         formData.append("file", file);
-        if (conteudoModulo) {
-            formData.append("conteudoModulo", conteudoModulo);
-        }
+        formData.append("conteudoModulo", conteudoModulo);
+
         await CreateCurso(formData);
 
         alert("Curso criado com sucesso!");
-
         navigate("/cursos");
     };
 
@@ -96,15 +94,18 @@ export default function CriarCurso() {
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <div className="grid grid-cols-2">
                             <div className="flex flex-col gap-4 m-2">
-                                <input
-                                    type="text"
-                                    name="cur_titulo"
-                                    placeholder="Título do Curso"
-                                    value={form.cur_titulo}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                    required
-                                />
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="cur_titulo">Título do Curso</label>
+                                    <input
+                                        type="text"
+                                        name="cur_titulo"
+                                        placeholder="Título do Curso"
+                                        value={form.cur_titulo}
+                                        onChange={handleChange}
+                                        className="p-3 rounded-lg bg-gray-700 outline-none"
+                                        required
+                                    />
+                                </div>
                                 <div className="flex flex-col gap-1">
                                     <label htmlFor="">Upload Imagem capa</label>
                                     <input
@@ -114,43 +115,54 @@ export default function CriarCurso() {
                                         className="p-3 rounded-lg bg-gray-700 outline-none"
                                     />
                                 </div>
-                                <input
-                                    type="text"
-                                    name="cur_descricao"
-                                    placeholder="Descrição do Curso"
-                                    value={form.cur_descricao}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                />
-                                <input
-                                    type="text"
-                                    name="cur_forma_avaliacao"
-                                    placeholder="Forma de avaliação"
-                                    value={form.cur_forma_avaliacao}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                />
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="cur_titulo">Descrição do Curso</label>
+                                    <input
+                                        type="text"
+                                        name="cur_descricao"
+                                        placeholder="Descrição do Curso"
+                                        value={form.cur_descricao}
+                                        onChange={handleChange}
+                                        className="p-3 rounded-lg bg-gray-700 outline-none"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="cur_titulo">Forma de avaliação</label>
+                                    <input
+                                        type="text"
+                                        name="cur_forma_avaliacao"
+                                        placeholder="Forma de avaliação"
+                                        value={form.cur_forma_avaliacao}
+                                        onChange={handleChange}
+                                        className="p-3 rounded-lg bg-gray-700 outline-none"
+                                    />
+                                </div>
                             </div>
                             <div className="flex flex-col gap-4 m-2">
-                                <input
-                                    type="text"
-                                    name="cur_publico"
-                                    placeholder="Público alvo"
-                                    value={form.cur_publico}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                    required
-                                />
-
-                                <input
-                                    type="text"
-                                    name="cur_n_modulos"
-                                    placeholder="Número de módulos"
-                                    value={form.cur_n_modulos}
-                                    onChange={handleChange}
-                                    className="p-3 rounded-lg bg-gray-700 outline-none"
-                                    required
-                                />
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="cur_titulo">Público alvo</label>
+                                    <input
+                                        type="text"
+                                        name="cur_publico"
+                                        placeholder="Público alvo"
+                                        value={form.cur_publico}
+                                        onChange={handleChange}
+                                        className="p-3 rounded-lg bg-gray-700 outline-none"
+                                        required
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <label htmlFor="cur_titulo">Número de Módulos</label>
+                                    <input
+                                        type="text"
+                                        name="cur_n_modulos"
+                                        placeholder="Número de módulos"
+                                        value={form.cur_n_modulos}
+                                        onChange={handleChange}
+                                        className="p-3 rounded-lg bg-gray-700 outline-none"
+                                        required
+                                    />
+                                </div>
                                 <div className="flex flex-col gap-1">
                                     <label>Conteúdo do módulo</label>
 

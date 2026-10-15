@@ -19,15 +19,11 @@ export const usuarioService = {
         return response.data;
     },
 
+
     async createUserProf(formData: FormData) {
         const response = await api.post(
             "/usuario/register-professor",
-            formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            }
+            formData
         );
 
         return response.data;

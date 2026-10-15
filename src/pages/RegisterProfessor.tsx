@@ -30,34 +30,47 @@ export default function RegisterProfessor() {
     }
   }
 
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
 
+    if (!file) {
+      alert("Selecione seu currículo em PDF.");
+      return;
+    }
+
     const formData = new FormData();
 
-    formData.append("usu_nome", form.usu_nome);
-    formData.append("usu_email", form.usu_email);
+    formData.append("usu_nome", form.usu_nome.trim());
+    formData.append("usu_email", form.usu_email.trim());
     formData.append("usu_senha", form.usu_senha);
-    formData.append("usu_proposta", form.usu_proposta);
-    formData.append("usu_lattes", form.usu_lattes);
+    formData.append("usu_proposta", form.usu_proposta.trim());
 
-    if (file) {
-      formData.append("file", file);
+    // Só envia o Lattes se o usuário preencher o campo.
+    if (form.usu_lattes.trim()) {
+      formData.append("usu_lattes", form.usu_lattes.trim());
     }
+
+    formData.append("file", file);
 
     try {
-      const response =
-        await usuarioService.createUserProf(formData);
+      const response = await usuarioService.createUserProf(formData);
 
       alert(response.message || "Usuário enviado para análise!");
-
       navigate("/login");
     } catch (error: any) {
-      console.error(error);
+      const mensagem = error.response?.data?.message;
+
+      console.error(
+        "Erro no cadastro do professor:",
+        error.response?.data ?? error.message
+      );
     }
   };
+
 
   return (
     <>
@@ -95,16 +108,64 @@ export default function RegisterProfessor() {
                   className="p-3 rounded-lg bg-gray-700 outline-none"
                   required
                 />
+
                 <label htmlFor="usu_senha">Senha</label>
-                <input
-                  type="password"
-                  name="usu_senha"
-                  placeholder="Senha"
-                  value={form.usu_senha}
-                  onChange={handleChange}
-                  className="p-3 rounded-lg bg-gray-700 outline-none"
-                  required
-                />
+
+                <div className="relative">
+                  <input
+                    type={mostrarSenha ? "text" : "password"}
+                    name="usu_senha"
+                    id="usu_senha"
+                    placeholder="Senha"
+                    value={form.usu_senha}
+                    onChange={handleChange}
+                    className="w-full p-3 pr-12 rounded-lg bg-gray-700 outline-none"
+                    required
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setMostrarSenha(!mostrarSenha)}
+                    aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                    title={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                    className="absolute inset-y-0 right-0 flex items-center justify-center px-3 text-gray-300 hover:text-white"
+                  >
+                    {mostrarSenha ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M3 3l18 18" />
+                        <path d="M10.58 10.58a2 2 0 0 0 2.83 2.83" />
+                        <path d="M9.88 5.09A10.7 10.7 0 0 1 12 4.9c5 0 8.27 4.11 9.5 7.1a11.8 11.8 0 0 1-3.1 4.27" />
+                        <path d="M6.61 6.61A13.4 13.4 0 0 0 2.5 12c1.23 2.99 4.5 7.1 9.5 7.1a10.7 10.7 0 0 0 5.39-1.41" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+
                 <label htmlFor="usu_proposta">Proposta de curso</label>
                 <input
                   type="text"
@@ -119,13 +180,19 @@ export default function RegisterProfessor() {
 
               <div className="flex flex-col gap-1 m-2">
                 <div className="flex flex-col gap-1">
-                  <label htmlFor="usu_curriculum">Upload Currículo PDF</label>
+
+                  <label htmlFor="file">Upload Currículo PDF</label>
+
                   <input
+                    id="file"
+                    name="file"
                     type="file"
-                    accept=".pdf"
+                    accept="application/pdf,.pdf"
                     onChange={handleFileChange}
                     className="p-3 rounded-lg bg-gray-700 outline-none"
+                    required
                   />
+
                 </div>
 
                 <label htmlFor="usu_lattes">Link currículo lattes</label>

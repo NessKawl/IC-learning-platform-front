@@ -164,11 +164,11 @@ export default function RegisterProfessor() {
                   </button>
                 </div>
 
-                <label htmlFor="usu_proposta">Proposta de curso</label>
+                <label htmlFor="usu_proposta">Tema do curso</label>
                 <input
                   type="text"
                   name="usu_proposta"
-                  placeholder="Proposta de curso"
+                  placeholder="Tema do curso"
                   value={form.usu_proposta}
                   onChange={handleChange}
                   className="p-3 rounded-lg bg-gray-700 outline-none"

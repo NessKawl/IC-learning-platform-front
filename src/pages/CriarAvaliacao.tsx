@@ -158,30 +158,88 @@ export default function CriarAvaliacao() {
         setQuestoes(copia);
     }
 
-    async function handleSubmit(
-        e: React.FormEvent
-    ) {
-
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        await CreateAvaliacao({
+        // Validar dados principais
+        if (!form.curso_id || !form.mod_id) {
+            alert("Selecione um curso e um módulo.");
+            return;
+        }
 
-            ava_titulo: form.ava_titulo,
+        if (!form.ava_titulo.trim()) {
+            alert("Informe o título da avaliação.");
+            return;
+        }
 
+        if (!form.ava_tempo_limite || Number(form.ava_tempo_limite) <= 0) {
+            alert("Informe um tempo limite válido.");
+            return;
+        }
+
+        // Identificar questões preenchidas
+        const questoesPreenchidas = questoes.filter(q =>
+            q.texto.trim() !== "" ||
+            q.alternativas.some(a => a.texto.trim() !== "")
+        );
+
+        if (questoesPreenchidas.length === 0) {
+            alert("Adicione pelo menos uma questão.");
+            return;
+        }
+
+        // Validar questões
+        for (let i = 0; i < questoesPreenchidas.length; i++) {
+            const questao = questoesPreenchidas[i];
+
+            if (!questao.texto.trim()) {
+                alert(`A questão ${i + 1} não possui enunciado.`);
+                return;
+            }
+
+            if (questao.alternativas.some(a => !a.texto.trim())) {
+                alert(`Preencha todas as alternativas da questão ${i + 1}.`);
+                return;
+            }
+
+            const corretas = questao.alternativas.filter(a => a.correta);
+
+            if (corretas.length !== 1) {
+                alert(`A questão ${i + 1} precisa ter exatamente uma alternativa correta.`);
+                return;
+            }
+        }
+
+        // Montar objeto para envio
+        const dados = {
+            ava_titulo: form.ava_titulo.trim(),
             ava_tipo: form.ava_tipo,
-
             ava_tempo_limite: Number(form.ava_tempo_limite),
-
             proctoring: form.proctoring,
-
             mod_id: Number(form.mod_id),
+            questoes: questoesPreenchidas
+        };
 
-            questoes
+        try {
+            console.log("JSON ENVIADO:", dados);
 
-        });
-        alert("Avaliação criada.");
+            await CreateAvaliacao(dados);
 
-        navigate("/cursos");
+            alert("Avaliação criada com sucesso.");
+
+            navigate("/cursos");
+
+        } catch (error: any) {
+            console.error(
+                "Erro ao criar avaliação:",
+                error.response?.data || error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Não foi possível criar a avaliação."
+            );
+        }
     }
 
     return (
@@ -205,78 +263,83 @@ export default function CriarAvaliacao() {
                         className="space-y-6"
                     >
 
-                        <select
-                            name="curso_id"
-                            value={form.curso_id}
-                            onChange={handleChange}
-                            className="w-full p-4 rounded-xl bg-gray-800"
-                        >
-
-                            <option value="">
+                        <div>
+                            <label className="block mb-2 text-gray-400">
                                 Curso
-                            </option>
+                            </label>
+                            <select
+                                name="curso_id"
+                                value={form.curso_id}
+                                onChange={handleChange}
+                                className="w-full p-4 rounded-xl bg-gray-800"
+                            >
+                                <option value="">
+                                    Curso
+                                </option>
+                                {cursos.map(c => (
+                                    <option
+                                        key={c.cur_id}
+                                        value={c.cur_id}
+                                    >
+                                        {c.cur_titulo}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                            {cursos.map(c => (
-
-                                <option
-                                    key={c.cur_id}
-                                    value={c.cur_id}
-                                >
-
-                                    {c.cur_titulo}
-
+                        <div>
+                            <label className="block mb-2 text-gray-400">
+                                Módulo
+                            </label>
+                            <select
+                                name="mod_id"
+                                value={form.mod_id}
+                                onChange={handleChange}
+                                disabled={!form.curso_id || loadingModulos}
+                                className="w-full p-4 rounded-xl bg-gray-800"
+                            >
+                                <option value="">
+                                    {loadingModulos
+                                        ? "Carregando..."
+                                        : "Selecione um módulo"}
                                 </option>
 
-                            ))}
+                                {modulos.map(m => (
+                                    <option
+                                        key={m.mod_id}
+                                        value={m.mod_id}
+                                    >
+                                        {m.mod_titulo}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                        </select>
+                        <div>
+                            <label className="block mb-2 text-gray-400">
+                                Título da avaliação
+                            </label>
+                            <input
+                                name="ava_titulo"
+                                value={form.ava_titulo}
+                                onChange={handleChange}
+                                placeholder="Título da avaliação"
+                                className="w-full p-4 rounded-xl bg-gray-800"
+                            />
+                        </div>
 
-                        <select
-                            name="mod_id"
-                            value={form.mod_id}
-                            onChange={handleChange}
-                            disabled={!form.curso_id}
-                            className="w-full p-4 rounded-xl bg-gray-800"
-                        >
-
-                            <option>
-
-                                {loadingModulos
-                                    ? "Carregando..."
-                                    : "Módulo"}
-
-                            </option>
-
-                            {modulos.map(m => (
-
-                                <option
-                                    key={m.mod_id}
-                                    value={m.mod_id}
-                                >
-
-                                    {m.mod_titulo}
-
-                                </option>
-
-                            ))}
-
-                        </select>
-
-                        <input
-                            name="ava_titulo"
-                            value={form.ava_titulo}
-                            onChange={handleChange}
-                            placeholder="Título da avaliação"
-                            className="w-full p-4 rounded-xl bg-gray-800"
-                        />
-
-                        <input
-                            name="ava_tempo_limite"
-                            value={form.ava_tempo_limite}
-                            onChange={handleChange}
-                            placeholder="Tempo limite questões (minutos)"
-                            className="w-full p-4 rounded-xl bg-gray-800"
-                        />
+                        <div>
+                            <label className="block mb-2 text-gray-400">
+                                Tempo limite para responder (em minutos)
+                            </label>
+                            <input
+                                name="ava_tempo_limite"
+                                value={form.ava_tempo_limite}
+                                onChange={handleChange}
+                                placeholder="Tempo limite questões (minutos)"
+                                className="w-full p-4 rounded-xl bg-gray-800"
+                            />
+                        </div>
 
                         <div className="space-y-8">
 
@@ -293,17 +356,25 @@ export default function CriarAvaliacao() {
 
                                     </h2>
 
+                                    <label className="block mb-2 text-gray-400">
+                                        Digite a pergunta
+                                    </label>
                                     <textarea
                                         value={q.texto}
+                                        maxLength={1000}
                                         onChange={(e) =>
                                             alterarQuestao(
                                                 i,
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full p-3 rounded-lg bg-gray-900 mb-4"
+                                        className="w-full p-3 rounded-lg bg-gray-900 mb-2"
                                         placeholder="Digite a pergunta..."
                                     />
+
+                                    <div className="text-right text-sm text-gray-500 mb-4">
+                                        {q.texto.length}/1000 caracteres
+                                    </div>
 
                                     {q.alternativas.map((a, j) => (
 
